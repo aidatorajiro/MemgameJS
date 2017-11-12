@@ -1,0 +1,23 @@
+{
+  "name": "memgame",
+  "version": "2.0.0",
+  "description": "A process memory adventure game.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/aidatorajiro/memgame",
+  "keywords": [
+    "Electron",
+    "game",
+    "memory",
+    "adventure",
+    "adventure game"
+  ],
+  "author": "Torajiro Aida",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.7.9",
+    "ffi": "^2.2.0"
+  }
+}
