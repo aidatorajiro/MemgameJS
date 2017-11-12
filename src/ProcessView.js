@@ -1,4 +1,4 @@
-const Memory = require("./MacMemory")
+const Memory = require("./Memory")
 
 class ProcessView {
   constructor(pid) {

@@ -18,6 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.7.9",
-    "ffi": "^2.2.0"
+    "ffi": "^2.2.0",
+    "three": "^0.88.0"
   }
 }

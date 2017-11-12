@@ -1,0 +1,19 @@
+if (process.platform == "darwin") {
+  module.exports = {
+    get_pids () {
+      return require("child_process")
+        .execSync('ps -A')
+        .toString()
+        .split("\n")
+        .map    ( ( x ) => { return x.match(" *(\\d+)") } )
+        .filter ( ( x ) => { return x != null           } )
+        .map    ( ( x ) => { return parseInt(x[1])      } )
+    }
+  }
+} else if (process.platform == "linux") {
+  throw new Error("not yet inplemented on linux")
+} else if (process.platform == "win32") {
+  throw new Error("not yet inplemented on windows")
+} else {
+  throw new Error("not yet inplemented on your operating system")
+}

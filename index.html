@@ -5,7 +5,9 @@
     <title>Memgame</title>
     <script>
       const Game = require("./src/Game.js")
-      const g = new Game()
+      window.addEventListener("load", function () {
+        new Game()
+      })
     </script>
   </head>
   <body>
