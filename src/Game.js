@@ -21,7 +21,15 @@ class Game {
     this.renderer.setSize( window.innerWidth, window.innerHeight )
     document.body.appendChild( this.renderer.domElement )
 
+    window.addEventListener('resize', () => { this.resize() }, false );
+
     this.animate()
+  }
+
+  resize () {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
   }
 
   animate () {
