@@ -12,6 +12,8 @@ class ProcessView {
   }
   
   getAddress(x, y) {
+    x += Math.floor(this.world_width / 2)
+    y += Math.floor(this.world_height / 2)
     x %= this.world_width
     y %= this.world_height
     let pos = x + y * this.world_height
