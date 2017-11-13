@@ -20,6 +20,10 @@ class Game {
     Globals.character = new Character()
     Globals.process_select = new ProcessSelect()
 
+    window.addEventListener( 'mousedown', function (ev) {
+      Globals.character.on_click(new THREE.Vector2(ev.clientX, ev.clientY))
+    }, false)
+
     this.animate()
   }
 
