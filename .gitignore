@@ -91,4 +91,5 @@ Temporary Items
 .apdisk
 
 build
+dist
 yarn.lock

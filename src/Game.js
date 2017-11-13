@@ -1,48 +1,47 @@
+const THREE = require("three")
 const View = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
-const THREE = require("three")
+const Character = require("./Character")
+const Globals = require("./Globals.js")
 
 class Game {
-  constructor () {
-    this.camera = new THREE.OrthographicCamera( this.width/-2, this.width/2, this.height/2, this.height/-2, 1, 2000 )
-    this.camera.position.z = 500
+  init () {
+    Globals.camera = new THREE.OrthographicCamera( Globals.width/-2, Globals.width/2, Globals.height/2, Globals.height/-2, 1, 2000 )
+    Globals.camera.position.z = 500
 
-    this.scene = new THREE.Scene()
+    Globals.scene = new THREE.Scene()
 
-    this.renderer = new THREE.WebGLRenderer( { antialias: true } )
-    this.renderer.setSize( this.width, this.height )
-    document.body.appendChild( this.renderer.domElement )
+    Globals.renderer = new THREE.WebGLRenderer( { antialias: true } )
+    Globals.renderer.setSize( Globals.width, Globals.height )
+    document.body.appendChild( Globals.renderer.domElement )
 
     window.addEventListener('resize', () => { this.resize() }, false )
 
-    this.process_select = new ProcessSelect(this)
+    Globals.character = new Character()
+    Globals.process_select = new ProcessSelect()
 
     this.animate()
   }
 
-  get width () {
-    return window.innerWidth
-  }
-
-  get height () {
-    return window.innerHeight
-  }
-
   resize () {
-    this.renderer.setSize(this.width, this.height)
-    this.camera.left   = this.width/-2
-    this.camera.right  = this.width/2
-    this.camera.top    = this.height/2
-    this.camera.bottom = this.height/-2
-    this.camera.updateProjectionMatrix()
+    Globals.renderer.setSize(Globals.width, Globals.height)
+    Globals.camera.left   = Globals.width/-2
+    Globals.camera.right  = Globals.width/2
+    Globals.camera.top    = Globals.height/2
+    Globals.camera.bottom = Globals.height/-2
+    Globals.camera.updateProjectionMatrix()
   }
 
   animate () {
     requestAnimationFrame( () => { this.animate() } )
 
-    this.process_select.update()
+    Globals.camera.position.x = Globals.character.coordinate.x
+    Globals.camera.position.y = Globals.character.coordinate.y
 
-    this.renderer.render( this.scene, this.camera )
+    Globals.character.update()
+    Globals.process_select.update()
+
+    Globals.renderer.render( Globals.scene, Globals.camera )
   }
 }
 

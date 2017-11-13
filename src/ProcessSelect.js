@@ -1,9 +1,10 @@
 const THREE = require("three")
 const Pid = require("./Pid")
 const suji = require("./suji.json")
+const Globals = require("./Globals")
 
 class ProcessSelect {
-  constructor (game) {
+  constructor () {
     this.pids = Pid.get_pids()
 
     this.blocks = []
@@ -24,7 +25,7 @@ class ProcessSelect {
       mesh.position.x = x * interval_x
       mesh.position.y = y * interval_y
       mesh.position.z = 0
-      game.scene.add( mesh )
+      Globals.scene.add( mesh )
 
       let label_geometry = new THREE.TextGeometry( this.pids[i].toString(), {
         font: font,
@@ -35,7 +36,7 @@ class ProcessSelect {
       label_mesh.position.x = x * interval_x - width / 2 + 5
       label_mesh.position.y = y * interval_y - height / 2 + 5
       label_mesh.position.z = 1
-      game.scene.add( label_mesh )
+      Globals.scene.add( label_mesh )
 
       this.blocks.push(geometry, material, mesh)
     }
