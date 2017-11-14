@@ -5,7 +5,7 @@ class Character {
   constructor () {
     this.eases = []
 
-    this.time = 0
+    this.time = 0 // frame count
 
     this.velocity = new THREE.Vector2(0, 0)
     this.coordinate = new THREE.Vector2(0, 0)
