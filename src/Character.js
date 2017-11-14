@@ -40,8 +40,8 @@ class Character {
       }
     }
 
-    //this.velocity.x *= 0.995
-    //this.velocity.y *= 0.995
+    this.velocity.x *= 0.995
+    this.velocity.y *= 0.995
 
     this.coordinate.add(this.velocity)
 
