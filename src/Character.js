@@ -21,8 +21,8 @@ class Character {
   // input: click event position on window
   on_click (vec) {
     this.eases.push([new THREE.Vector2(
-      Math.atan((vec.x-Globals.width/2)*0.01)*0.1,
-      Math.atan((-vec.y+Globals.height/2)*0.01)*0.1
+      Math.atan((vec.x-Globals.width/2)*0.04)*0.1,
+      Math.atan((-vec.y+Globals.height/2)*0.04)*0.1
     ), this.time])
   }
 
@@ -34,10 +34,8 @@ class Character {
       let coefficient = i[0]
       let t = this.time - i[1] - 5
 
-      if (t <= 3) {
-        this.velocity.x += coefficient.x / (0.01*t*t + 1)
-        this.velocity.y += coefficient.y / (0.01*t*t + 1)
-      }
+      this.velocity.x += coefficient.x / (0.1*t*t + 1)
+      this.velocity.y += coefficient.y / (0.1*t*t + 1)
     }
 
     this.velocity.x *= 0.995
