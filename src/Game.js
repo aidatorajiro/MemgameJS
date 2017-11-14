@@ -37,7 +37,7 @@ class Game {
   }
 
   animate () {
-    requestAnimationFrame( () => { this.animate() } )
+    Globals.renderer.render( Globals.scene, Globals.camera )
 
     Globals.camera.position.x = Globals.character.coordinate.x
     Globals.camera.position.y = Globals.character.coordinate.y
@@ -45,7 +45,7 @@ class Game {
     Globals.character.update()
     Globals.process_select.update()
 
-    Globals.renderer.render( Globals.scene, Globals.camera )
+    requestAnimationFrame( () => { this.animate() } )
   }
 }
 
