@@ -5,6 +5,9 @@ class Character {
   constructor () {
     this.eases = []
 
+    this.time = 0
+
+    this.velocity = new THREE.Vector2(0, 0)
     this.coordinate = new THREE.Vector2(0, 0)
 
     this.material = new THREE.MeshBasicMaterial( { color: 0xffffff } )
@@ -18,33 +21,31 @@ class Character {
   // input: click event position on window
   on_click (vec) {
     this.eases.push([new THREE.Vector2(
-      Math.atan((vec.x-Globals.width/2)*0.01)*0.3,
-      Math.atan((-vec.y+Globals.height/2)*0.01)*0.3
-    ), 0])
-  }
-
-  get velocity () {
-    let vec = new THREE.Vector2(0, 0)
-
-    for (let i of this.eases) {
-      let coeffs = i[0], t = i[1]
-
-      if (t <= 1) {
-        vec.x += coeffs.x / (10*t*t + 1)
-        vec.y += coeffs.y / (10*t*t + 1)
-
-        i[1] += 0.001
-      }
-    }
-
-    return vec
+      Math.atan((vec.x-Globals.width/2)*0.01)*0.1,
+      Math.atan((-vec.y+Globals.height/2)*0.01)*0.1
+    ), this.time])
   }
 
   update () {
     this.mesh.position.x = this.coordinate.x
     this.mesh.position.y = this.coordinate.y
 
+    for (let i of this.eases) {
+      let coefficient = i[0]
+      let t = this.time - i[1] - 5
+
+      if (t <= 3) {
+        this.velocity.x += coefficient.x / (0.01*t*t + 1)
+        this.velocity.y += coefficient.y / (0.01*t*t + 1)
+      }
+    }
+
+    //this.velocity.x *= 0.995
+    //this.velocity.y *= 0.995
+
     this.coordinate.add(this.velocity)
+
+    this.time += 1
   }
 }
 
