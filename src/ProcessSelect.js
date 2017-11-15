@@ -3,18 +3,35 @@ const Pid = require("./Pid")
 const suji = require("./suji.json")
 const Globals = require("./Globals")
 
+let cols = 10
+let width = 90
+let height = 90
+let interval_x = 150
+let interval_y = 150
+let font = new THREE.Font(suji)
+
 class ProcessSelect {
   constructor () {
     this.pids = Pid.get_pids()
+    this.finished = false
 
-    this.meshes = []
-    let cols = 10
-    let width = 90
-    let height = 90
-    let interval_x = 150
-    let interval_y = 150
-    let font = new THREE.Font(suji)
+    this.progress = 0
 
+    // create overwrap block
+    {
+      let geometry = new THREE.PlaneGeometry( width - 2, height - 2, 1, 1 )
+      let material = new THREE.MeshBasicMaterial( { color: 0xff0000 } )
+      let mesh = new THREE.Mesh( geometry, material )
+      mesh.visible = false
+      mesh.position.z = 1
+      Globals.scene.add( mesh )
+
+      this.overwrap = mesh
+    }
+
+    // create process blocks
+    this.blocks = []
+    this.labels = []
     for (let i in this.pids) {
       let x = (i % cols - cols / 2 + 0.5) * interval_x
       let y = (Math.floor(i / cols) - Math.floor(this.pids.length / cols)) * interval_y
@@ -30,7 +47,7 @@ class ProcessSelect {
         mesh.position.z = 0
         Globals.scene.add( mesh )
 
-        this.meshes.push( mesh )
+        this.blocks.push( mesh )
       }
 
       // label
@@ -43,22 +60,83 @@ class ProcessSelect {
         let mesh = new THREE.Mesh( geometry, material )
         mesh.position.x = x - width / 2 + 5
         mesh.position.y = y - height / 2 + 5
-        mesh.position.z = 1
+        mesh.position.z = 2
         Globals.scene.add( mesh )
-      }
 
+        this.labels.push( mesh )
+      }
     }
   }
 
   update () {
-    // colision detection to all of the blocks
+    // When all heve done, clean up
+    if (this.progress >= 2) {
+      Globals.scene.remove(this.overwrap)
+      this.overwrap.geometry.dispose()
+      this.overwrap.material.dispose()
+
+      for (let m of this.blocks) {
+        Globals.scene.remove(m)
+        m.geometry.dispose()
+        m.material.dispose()
+      }
+
+      for (let m of this.labels) {
+        Globals.scene.remove(m)
+        m.geometry.dispose()
+        m.material.dispose()
+      }
+
+      this.finished = true
+
+      return
+    }
+
+    // After selecting, blocks will fade.
+    if (this.progress >= 1) {
+      for (let m of this.blocks) {
+        m.material.opacity -= 0.005
+        m.material.transparent = true
+      }
+      this.progress += 0.005
+      return
+    }
+
+    // calculate the index of current selecting block
+    let index = null
     let c = Globals.character.coordinate
     let ray = new THREE.Raycaster(new THREE.Vector3(c.x, c.y, 0), new THREE.Vector3(0, 0, -1))
-    for (let mesh of this.meshes) {
-      let intersect = ray.intersectObject(mesh)
-      if (intersect.length > 0) {
-        
+    for(let i in this.blocks) {
+      if (ray.intersectObject(this.blocks[i]).length > 0) {
+        index = i
       }
+    }
+
+    // decorate block
+    let mesh = this.blocks[index], overwrap = this.overwrap
+
+    if (index !== null) {
+
+      overwrap.position.x = mesh.position.x
+      overwrap.position.y = mesh.position.y
+
+      overwrap.visible = true
+
+      overwrap.geometry = new THREE.PlaneGeometry((width - 2)*this.progress, height - 2)
+
+      overwrap.material.color =
+        new THREE.Color(
+          1 + (0.054 - 1)*this.progress, 
+          1 + (0.364 - 1)*this.progress,
+          1 + (0.698 - 1)*this.progress)
+      
+      this.progress += 0.005
+
+    } else {
+
+      overwrap.visible = false
+      this.progress = 0
+
     }
   }
 }
