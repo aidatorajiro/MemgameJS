@@ -1,5 +1,5 @@
 const THREE = require("three")
-const View = require("./ProcessView")
+const ProcessView = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
 const Character = require("./Character")
 const Globals = require("./Globals.js")
@@ -43,7 +43,17 @@ class Game {
     Globals.camera.position.y = Globals.character.coordinate.y
 
     Globals.character.update()
-    Globals.process_select.update()
+
+    if (Globals.process_select.finished == false) {
+      Globals.process_select.update()
+    }
+
+    if (Globals.process_select.selected == true) {
+      if (Globals.process_view === undefined) {
+        Globals.process_view = new ProcessView(Globals.process_select.pid)
+      }
+      Globals.process_view.update()
+    }
 
     requestAnimationFrame( () => { this.animate() } )
   }

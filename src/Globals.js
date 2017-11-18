@@ -4,6 +4,7 @@ module.exports = {
   renderer: undefined,
   game: undefined,
   process_select: undefined,
+  process_view: undefined,
   character: undefined,
   get width () {
     return window.innerWidth

@@ -2,6 +2,7 @@ const THREE = require("three")
 const Pid = require("./Pid")
 const suji = require("./suji.json")
 const Globals = require("./Globals")
+const Memory = require("./Memory")
 
 let cols = 10
 let width = 90
@@ -13,6 +14,8 @@ let font = new THREE.Font(suji)
 class ProcessSelect {
   constructor () {
     this.pids = Pid.get_pids()
+    this.pid = undefined
+    this.selected = false
     this.finished = false
 
     this.progress = 0
@@ -69,8 +72,12 @@ class ProcessSelect {
   }
 
   update () {
-    // When all heve done, clean up
-    if (this.progress >= 2) {
+    if (this.finished == true) {
+      return
+    }
+
+    // When all heve finished, clean up
+    if (this.progress >= 2.2) {
       Globals.scene.remove(this.overwrap)
       this.overwrap.geometry.dispose()
       this.overwrap.material.dispose()
@@ -92,13 +99,23 @@ class ProcessSelect {
       return
     }
 
-    // After selecting, blocks will fade.
+    // After selecting
     if (this.progress >= 1) {
+      // make sure that pid is correct
+      try {
+        new Memory(this.pid).get_regions()
+      } catch (e) {
+        this.progress = 0
+        return
+      }
+      
+      // fade blocks 
       for (let m of this.blocks) {
-        m.material.opacity -= 0.005
+        m.material.opacity -= 0.015
         m.material.transparent = true
       }
-      this.progress += 0.005
+      this.progress += 0.015
+      this.selected = true
       return
     }
 
@@ -129,13 +146,16 @@ class ProcessSelect {
           1 + (0.054 - 1)*this.progress, 
           1 + (0.364 - 1)*this.progress,
           1 + (0.698 - 1)*this.progress)
-      
+
+      this.pid = this.pids[index]
+
       this.progress += 0.005
 
     } else {
 
       overwrap.visible = false
       this.progress = 0
+      this.pid = undefined
 
     }
   }
