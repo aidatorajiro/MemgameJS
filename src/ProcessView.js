@@ -10,6 +10,8 @@ let MAX_POINTS = 10000
 
 class ProcessView {
   constructor(pid) {
+    this.tickcount = 0
+    
     this.mem = new Memory(pid)
     this.regions = this.mem.get_regions()
     this.offsets = this.regions.map((x)=>{return x[0]})
@@ -19,11 +21,9 @@ class ProcessView {
     this.world_height = this.world_width
     this.world_map = {}
 
-    this.world_geometry          = new THREE.BufferGeometry()
-    this.world_geometry_position = new Float32Array( MAX_POINTS * 3 )
-    this.world_geometry.addAttribute( 'position', new THREE.BufferAttribute( this.world_geometry_position, 3 ) )
-    this.world_geometry_color    = new Float32Array( MAX_POINTS * 3 )
-    this.world_geometry.addAttribute( 'color'   , new THREE.BufferAttribute( this.world_geometry_color   , 3 ) )
+    this.world_geometry = new THREE.BufferGeometry()
+    this.world_geometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( MAX_POINTS * 3 ), 3 ) )
+    this.world_geometry.addAttribute( 'color'   , new THREE.BufferAttribute( new Float32Array( MAX_POINTS * 3 ), 3 ) )
 
     this.world_material = new THREE.PointsMaterial( { vertexColors: true, size: 18, sizeAttenuation: false } )
     this.world_points = new THREE.Points( this.world_geometry, this.world_material )
@@ -55,35 +55,40 @@ class ProcessView {
 
   update () {
 
+    let update_map = this.tickcount % 10 == 0
+
     let size = 20
     let cx = Math.floor(Globals.character.coordinate.x / size)
     let cy = Math.floor(Globals.character.coordinate.y / size)
-    let width = 20
-    let height = 20
+    let width = Math.floor(Globals.width / size / 2)
+    let height = Math.floor(Globals.height / size / 2)
 
     this.world_points.position.x = cx * size
     this.world_points.position.y = cy * size
 
+    let position = this.world_geometry.attributes.position.array
+    let array    = this.world_geometry.attributes.color.array
+
     let pos_index = 0, col_index = 0, vert_index = 0
 
-    for (let i = -width; i < width; i++) {
-      for (let j = -height; j < height; j++) {
+    for (let i = -width; i < width + 3; i++) {
+      for (let j = -height; j < height + 3; j++) {
         let x = cx + i
         let y = cy + j
 
         let byte = this.world_map[x+","+y]
-        if (byte === undefined) {
+        if (byte === undefined || update_map) {
           byte = this.world_map[x+","+y] = this.getByte(x, y)
         }
         if (byte != 0) {
           let col = byte / 255
-          this.world_geometry_position[pos_index++] = i * size
-          this.world_geometry_position[pos_index++] = j * size
-          this.world_geometry_position[pos_index++] = 0
+          position[pos_index++] = i * size
+          position[pos_index++] = j * size
+          position[pos_index++] = 0
 
-          this.world_geometry_color[col_index++] = col
-          this.world_geometry_color[col_index++] = col
-          this.world_geometry_color[col_index++] = col
+          array[col_index++] = col
+          array[col_index++] = col
+          array[col_index++] = col
 
           vert_index++
         }
@@ -93,6 +98,8 @@ class ProcessView {
     this.world_geometry.attributes.position.needsUpdate = true
     this.world_geometry.attributes.color   .needsUpdate = true
     this.world_geometry.setDrawRange( 0, vert_index )
+
+    this.tickcount++
   }
 }
 

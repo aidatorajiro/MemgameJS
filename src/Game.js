@@ -18,7 +18,7 @@ class Game {
     window.addEventListener('resize', () => { this.resize() }, false )
 
     Globals.character = new Character()
-    //Globals.process_select = new ProcessSelect()
+    Globals.process_select = new ProcessSelect()
 
     window.addEventListener( 'mousedown', function (ev) {
       Globals.character.on_click(new THREE.Vector2(ev.clientX, ev.clientY))
@@ -44,16 +44,16 @@ class Game {
 
     Globals.character.update()
 
-    //if (Globals.process_select.finished == false) {
-    //  Globals.process_select.update()
-    //}
+    if (Globals.process_select.finished == false) {
+      Globals.process_select.update()
+    }
 
-    //if (Globals.process_select.selected == true) {
+    if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(process.pid)
+        Globals.process_view = new ProcessView(Globals.process_select.pid)
       }
       Globals.process_view.update()
-    //}
+    }
 
     requestAnimationFrame( () => { this.animate() } )
   }
