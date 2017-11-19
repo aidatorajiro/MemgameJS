@@ -28,11 +28,14 @@ class ProcessView {
     this.world_material = new THREE.PointsMaterial( { vertexColors: true, size: 18, sizeAttenuation: false } )
     this.world_points = new THREE.Points( this.world_geometry, this.world_material )
     Globals.scene.add( this.world_points )
+
+    this.getAddress_offset_x = Math.floor(this.world_width / 2)
+    this.getAddress_offset_y = Math.floor(this.world_height / 2)
   }
   
   getAddress(x, y) {
-    x += Math.floor(this.world_width / 2)
-    y += Math.floor(this.world_height / 2)
+    x += this.getAddress_offset_x
+    y += this.getAddress_offset_y
     x = mod(x, this.world_width)
     y = mod(y, this.world_height)
     let pos = x + y * this.world_width
