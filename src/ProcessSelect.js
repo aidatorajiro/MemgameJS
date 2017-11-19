@@ -130,9 +130,11 @@ class ProcessSelect {
     }
 
     // decorate block
-    let mesh = this.blocks[index], overwrap = this.overwrap
+    let overwrap = this.overwrap
 
     if (index !== null) {
+      
+      let mesh = this.blocks[index]
 
       overwrap.position.x = mesh.position.x
       overwrap.position.y = mesh.position.y
