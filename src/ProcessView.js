@@ -1,4 +1,3 @@
-const THREE = require("three")
 const Memory = require("./Memory")
 const Globals = require("./Globals")
 

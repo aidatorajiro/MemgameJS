@@ -1,4 +1,3 @@
-const THREE = require("three")
 const Pid = require("./Pid")
 const suji = require("./suji.json")
 const Globals = require("./Globals")
