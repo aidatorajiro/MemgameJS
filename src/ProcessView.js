@@ -58,7 +58,7 @@ class ProcessView {
 
   update () {
 
-    let update_map = this.tickcount % 10 == 0
+    let update_map = Math.random() < 0.01
 
     let size = 20
     let cx = Math.floor(Globals.character.coordinate.x / size)
