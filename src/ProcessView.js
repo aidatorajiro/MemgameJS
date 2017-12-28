@@ -9,12 +9,22 @@ let choice = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+let random_norm = function() {
+  //平均0、標準偏差1の正規乱数を返す。
+  var s, i;
+  s = 0;
+  for(i = 0; i < 12; i++) {
+    s += Math.random();
+  }
+  return s - 6;
+}
+
 let MAX_POINTS = 10000
 
 class ProcessView {
   constructor(pid) {
     this.tickcount = 0
-    this.update_range = 20
+    this.tilesize = 20
 
     this.mem = new Memory(pid)
 
@@ -50,26 +60,25 @@ class ProcessView {
     try {
       return (await this.mem.read_async(this.getAddress(x, y), 1))[0]
     } catch (e) {
-      console.log("!")
+      console.log(x, y)
       return 0
     }
   }
 
   async update_map () {
-    let size = this.update_range
+    let size = this.tilesize
     let cx = Math.floor(Globals.character.coordinate.x / size)
     let cy = Math.floor(Globals.character.coordinate.y / size)
     let width = Math.floor(Globals.width / size / 2)
     let height = Math.floor(Globals.height / size / 2)
 
-    for (let i = -width; i < width + 3; i++) {
-      for (let j = -height; j < height + 3; j++) {
-        let x = cx + i
-        let y = cy + j
+    let theta = Math.random() * Math.PI * 2
+    let r = Math.sqrt(Math.random() * width * height)
 
-        this.world_map[x+","+y] = await this.getByte(x, y)
-      }
-    }
+    let x = cx + Math.floor(r * Math.cos(theta))
+    let y = cy + Math.floor(r * Math.sin(theta))
+
+    this.world_map[x+","+y] = await this.getByte(x, y)
   }
 
   async update_map_infinite () {
@@ -79,7 +88,7 @@ class ProcessView {
   }
 
   update () {
-    let size = this.update_range
+    let size = this.tilesize
     let cx = Math.floor(Globals.character.coordinate.x / size)
     let cy = Math.floor(Globals.character.coordinate.y / size)
     let width = Math.floor(Globals.width / size / 2)
