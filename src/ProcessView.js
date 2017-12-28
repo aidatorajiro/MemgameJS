@@ -5,6 +5,10 @@ let mod = function (n, m) {
   return ((n % m) + m) % m;
 }
 
+let choice = function (arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 let MAX_POINTS = 10000
 
 class ProcessView {
@@ -12,12 +16,11 @@ class ProcessView {
     this.tickcount = 0
     
     this.mem = new Memory(pid)
-    this.regions = this.mem.get_regions()
-    this.offsets = this.regions.map((x)=>{return x[0]})
-    this.lengths = this.regions.map((x)=>{return x[1]})
-    this.world_size = this.lengths.reduce((a,b)=>{return a+b})
-    this.world_width = Math.floor(Math.sqrt(this.world_size))
-    this.world_height = this.world_width
+
+    this.region = choice(this.mem.get_regions())
+
+    this.world_size = this.region[1]
+    this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
     this.world_map = {}
 
     this.world_geometry = new THREE.BufferGeometry()
@@ -37,18 +40,12 @@ class ProcessView {
     y += this.getAddress_offset_y
     x = mod(x, this.world_width)
     y = mod(y, this.world_height)
-    let pos = x + y * this.world_width
-    for (let i in this.lengths) {
-      pos -= this.lengths[i]
-      if (pos < 0) {
-        return this.offsets[i] + this.lengths[i] + pos
-      }
-    }
+    return this.region[0] + x + y * this.world_width
   }
-  
+
   getByte(x, y) {
     try {
-      return this.mem.read(this.getAddress(x, y), 1).readUInt8()
+      return this.mem.read(this.getAddress(x, y), 1)[0]
     } catch (e) {
       console.log("!")
       return 0
