@@ -14,7 +14,8 @@ let MAX_POINTS = 10000
 class ProcessView {
   constructor(pid) {
     this.tickcount = 0
-    
+    this.update_range = 20
+
     this.mem = new Memory(pid)
 
     this.region = choice(this.mem.get_regions())
@@ -33,8 +34,10 @@ class ProcessView {
 
     this.getAddress_offset_x = Math.floor(this.world_width / 2)
     this.getAddress_offset_y = Math.floor(this.world_height / 2)
+
+    this.update_map_infinite()
   }
-  
+
   getAddress(x, y) {
     x += this.getAddress_offset_x
     y += this.getAddress_offset_y
@@ -43,20 +46,40 @@ class ProcessView {
     return this.region[0] + x + y * this.world_width
   }
 
-  getByte(x, y) {
+  async getByte(x, y) {
     try {
-      return this.mem.read(this.getAddress(x, y), 1)[0]
+      return (await this.mem.read_async(this.getAddress(x, y), 1))[0]
     } catch (e) {
       console.log("!")
       return 0
     }
   }
 
+  async update_map () {
+    let size = this.update_range
+    let cx = Math.floor(Globals.character.coordinate.x / size)
+    let cy = Math.floor(Globals.character.coordinate.y / size)
+    let width = Math.floor(Globals.width / size / 2)
+    let height = Math.floor(Globals.height / size / 2)
+
+    for (let i = -width; i < width + 3; i++) {
+      for (let j = -height; j < height + 3; j++) {
+        let x = cx + i
+        let y = cy + j
+
+        this.world_map[x+","+y] = await this.getByte(x, y)
+      }
+    }
+  }
+
+  async update_map_infinite () {
+    while (true) {
+      await this.update_map()
+    }
+  }
+
   update () {
-
-    let update_map = Math.random() < 0.01
-
-    let size = 20
+    let size = this.update_range
     let cx = Math.floor(Globals.character.coordinate.x / size)
     let cy = Math.floor(Globals.character.coordinate.y / size)
     let width = Math.floor(Globals.width / size / 2)
@@ -75,12 +98,9 @@ class ProcessView {
         let x = cx + i
         let y = cy + j
 
-        let byte = this.world_map[x+","+y]
-        if (byte === undefined || update_map) {
-          byte = this.world_map[x+","+y] = this.getByte(x, y)
-        }
-        if (byte != 0) {
-          let col = byte / 255
+        let col = this.world_map[x+","+y]
+
+        if (col != 0) {
           position[pos_index++] = i * size
           position[pos_index++] = j * size
           position[pos_index++] = 0

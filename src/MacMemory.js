@@ -60,15 +60,30 @@ class Memory {
     
     return regions;
   }
-  
+
   read(address, length) {
     let detaref = ref.alloc("*void")
     let cnt = ref.alloc("uint32", 0)
+
     let ret = libc.mach_vm_read(this.task, address, length, detaref, cnt)
     if (ret != 0) {
       throw new Error("mach_vm_read error " + ret)
     }
     return detaref.readPointer(0, length)
+  }
+
+  read_async(address, length) {
+    let detaref = ref.alloc("*void")
+    let cnt = ref.alloc("uint32", 0)
+
+    return new Promise((resolve, reject) => {
+      libc.mach_vm_read.async(this.task, address, length, detaref, cnt, (err, ret) => {
+        if (ret != 0) {
+          reject("mach_vm_read error " + ret)
+        }
+        resolve(detaref.readPointer(0, length))
+      })
+    })
   }
 }
 
