@@ -1,5 +1,5 @@
 module.exports = {
-  CAPTURE_MODE: true,
-  CAPTURE_PATH: "out.webm",
-  CAPTURE_TIME: 10
+  ASYNC_MODE: false,
+  CAPTURE_MODE: false,
+  CAPTURE_TIME: 7*60
 }

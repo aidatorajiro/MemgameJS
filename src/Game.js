@@ -25,8 +25,8 @@ class Game {
         format: 'webm',
         timeLimit: Config.CAPTURE_TIME
       })
+      Globals.capturer.start();
     }
-    Globals.capturer.start();
 
     // event handlers
     window.addEventListener('resize', () => { this.resize() }, false )
@@ -70,7 +70,7 @@ class Game {
 
     if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(Globals.process_select.pid, !Config.CAPTURE_MODE)
+        Globals.process_view = new ProcessView(Globals.process_select.pid, Config.ASYNC_MODE)
       }
       Globals.process_view.update()
     }
