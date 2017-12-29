@@ -17,8 +17,11 @@
   "author": "Torajiro Aida",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.7.9",
+    "electron": "^1.7.9"
+  },
+  "dependencies": {
     "ffi": "^2.2.0",
-    "three": "^0.88.0"
+    "three": "^0.88.0",
+    "ccapture.js": "^1.0.7"
   }
 }

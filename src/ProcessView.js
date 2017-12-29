@@ -14,7 +14,8 @@ let choice = function (arr) {
 let MAX_POINTS = 10000
 
 class ProcessView {
-  constructor(pid) {
+  constructor(pid, async=true) {
+    this.isAsync = async
     this.tickcount = 0
     this.tilesize = 20
 
@@ -37,7 +38,15 @@ class ProcessView {
     this.getAddress_offset_x = Math.floor(this.world_width / 2)
     this.getAddress_offset_y = Math.floor(this.world_height / 2)
 
-    this.update_map_infinite()
+    // if async, do an infinite loop of update_map_async on constructing.
+    // if not async, the frame update function "update()" will update world_map.
+    if (this.isAsync) {
+      (async () => {
+        while (true) {
+          await this.update_map_async()
+        }
+      })()
+    }
   }
 
   getAddress(x, y) {
@@ -48,7 +57,7 @@ class ProcessView {
     return this.region[0] + x + y * this.world_width
   }
 
-  async getByte(x, y) {
+  async getByteAsync(x, y) {
     try {
       return (await this.mem.read_async(this.getAddress(x, y), 1))[0]
     } catch (e) {
@@ -57,26 +66,31 @@ class ProcessView {
     }
   }
 
-  async update_map () {
-    let size = this.tilesize
-    let cx = Math.floor(Globals.character.coordinate.x / size)
-    let cy = Math.floor(Globals.character.coordinate.y / size)
-    let width = Math.floor(Globals.width / size / 2)
-    let height = Math.floor(Globals.height / size / 2)
-
-    for (let i = -width; i < width + 3; i++) {
-      for (let j = -height; j < height + 3; j++) {
-        let x = cx + i
-        let y = cy + j
-
-        this.world_map[x+","+y] = await this.getByte(x, y)
-      }
+  getByteSync(x, y) {
+    try {
+      return this.mem.read(this.getAddress(x, y), 1)[0]
+    } catch (e) {
+      console.log(x, y)
+      return 0
     }
   }
 
-  async update_map_infinite () {
-    while (true) {
-      await this.update_map()
+  async update_map_async () {
+    let size = this.tilesize
+    let cx = Math.floor(Globals.character.coordinate.x / size)
+    let cy = Math.floor(Globals.character.coordinate.y / size)
+    let width = Math.floor(Globals.width / size / 2) + 3
+    let height = Math.floor(Globals.height / size / 2) + 3
+
+    let promises = []
+
+    for (let i = -width; i < width; i++) {
+      for (let j = -height; j < height; j++) {
+        let x = cx + i
+        let y = cy + j
+
+        this.world_map[x+","+y] = await this.getByteAsync(x, y)
+      }
     }
   }
 
@@ -84,8 +98,8 @@ class ProcessView {
     let size = this.tilesize
     let cx = Math.floor(Globals.character.coordinate.x / size)
     let cy = Math.floor(Globals.character.coordinate.y / size)
-    let width = Math.floor(Globals.width / size / 2)
-    let height = Math.floor(Globals.height / size / 2)
+    let width = Math.floor(Globals.width / size / 2) + 3
+    let height = Math.floor(Globals.height / size / 2) + 3
 
     this.world_points.position.x = cx * size
     this.world_points.position.y = cy * size
@@ -95,10 +109,14 @@ class ProcessView {
 
     let pos_index = 0, col_index = 0, vert_index = 0
 
-    for (let i = -width; i < width + 3; i++) {
-      for (let j = -height; j < height + 3; j++) {
+    for (let i = -width; i < width; i++) {
+      for (let j = -height; j < height; j++) {
         let x = cx + i
         let y = cy + j
+
+        if (!this.isAsync) {
+          this.world_map[x+","+y] = this.getByteSync(x, y)
+        }
 
         let col = this.world_map[x+","+y]
 
