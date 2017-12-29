@@ -1,5 +1,5 @@
 module.exports = {
-  ASYNC_MODE: false,
+  ASYNC_MODE: true,
   CAPTURE_MODE: false,
-  CAPTURE_TIME: 7*60
+  CAPTURE_PATH: "test.mp4"
 }

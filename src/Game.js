@@ -1,4 +1,7 @@
-const CCapture = require("ccapture.js")
+const electron = require('electron')
+const createVideoRecorder = require('../electron-recorder/index')
+const win = electron.remote.getCurrentWindow()
+
 const ProcessView = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
 const Character = require("./Character")
@@ -19,13 +22,14 @@ class Game {
 
     // capturer preparation (if Config.CAPTURE_MODE is set true)
     if (Config.CAPTURE_MODE) {
-      Globals.capturer = new CCapture({
-        verbose: false,
-        framerate: 60,
-        format: 'webm',
-        timeLimit: Config.CAPTURE_TIME
+      Globals.capturer = createVideoRecorder(win, {
+        fps: 60,
+        output: Config.CAPTURE_PATH
       })
-      Globals.capturer.start();
+
+      win.on("closed", () => {
+        Globals.capturer.end()
+      })
     }
 
     // event handlers
@@ -55,10 +59,6 @@ class Game {
   animate () {
     Globals.renderer.render( Globals.scene, Globals.camera )
 
-    if (Config.CAPTURE_MODE) {
-      Globals.capturer.capture( Globals.renderer.domElement );
-    }
-
     Globals.camera.position.x = Globals.character.coordinate.x
     Globals.camera.position.y = Globals.character.coordinate.y
 
@@ -75,7 +75,15 @@ class Game {
       Globals.process_view.update()
     }
 
-    requestAnimationFrame( () => { this.animate() } )
+    if (Config.CAPTURE_MODE) {
+      requestAnimationFrame( () => {
+        Globals.capturer.frame( () => {
+          this.animate()
+        })
+      })
+    } else {
+      requestAnimationFrame( () => { this.animate() } )
+    }
   }
 }
 
