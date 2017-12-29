@@ -1,4 +1,5 @@
 module.exports = {
+  capturer: undefined,
   scene: undefined,
   camera: undefined,
   renderer: undefined,

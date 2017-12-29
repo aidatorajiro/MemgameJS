@@ -1,7 +1,9 @@
 const ProcessView = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
 const Character = require("./Character")
-const Globals = require("./Globals.js")
+const Globals = require("./Globals")
+const Config = require("./Config")
+const Capturer = require("./Capturer")
 
 class Game {
   init () {
@@ -14,6 +16,11 @@ class Game {
     Globals.renderer = new THREE.WebGLRenderer( { antialias: true } )
     Globals.renderer.setSize( Globals.width, Globals.height )
     document.body.appendChild( Globals.renderer.domElement )
+
+    // capturer preparation
+    if (Config.CAPTURE_MODE) {
+      Globals.capturer = new Capturer(Config.CAPTURE_PATH)
+    }
 
     // event handlers
     window.addEventListener('resize', () => { this.resize() }, false )
@@ -53,7 +60,7 @@ class Game {
 
     if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(Globals.process_select.pid)
+        Globals.process_view = new ProcessView(Globals.process_select.pid, !Config.CAPTURE_MODE)
       }
       Globals.process_view.update()
     }
