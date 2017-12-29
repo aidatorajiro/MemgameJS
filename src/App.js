@@ -1,7 +1,7 @@
 const Game = require("./Game.js")
-const globals = require("./Globals.js")
+const Globals = require("./Globals.js")
 
 window.addEventListener("load", function () {
-  globals.game = new Game()
-  globals.game.init()
+  Globals.game = new Game()
+  Globals.game.init()
 })

@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "ffi": "^2.2.0",
-    "three": "^0.88.0",
-    "ccapture.js": "^1.0.7"
+    "three": "^0.88.0"
   }
 }

@@ -1,7 +1,9 @@
+const CCapture = require("ccapture.js")
 const ProcessView = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
 const Character = require("./Character")
 const Globals = require("./Globals.js")
+const Config = require("./Config.js")
 
 class Game {
   init () {
@@ -14,6 +16,17 @@ class Game {
     Globals.renderer = new THREE.WebGLRenderer( { antialias: true } )
     Globals.renderer.setSize( Globals.width, Globals.height )
     document.body.appendChild( Globals.renderer.domElement )
+
+    // capturer preparation (if Config.CAPTURE_MODE is set true)
+    if (Config.CAPTURE_MODE) {
+      Globals.capturer = new CCapture({
+        verbose: false,
+        framerate: 60,
+        format: 'webm',
+        timeLimit: Config.CAPTURE_TIME
+      })
+    }
+    Globals.capturer.start();
 
     // event handlers
     window.addEventListener('resize', () => { this.resize() }, false )
@@ -42,6 +55,10 @@ class Game {
   animate () {
     Globals.renderer.render( Globals.scene, Globals.camera )
 
+    if (Config.CAPTURE_MODE) {
+      Globals.capturer.capture( Globals.renderer.domElement );
+    }
+
     Globals.camera.position.x = Globals.character.coordinate.x
     Globals.camera.position.y = Globals.character.coordinate.y
 
@@ -53,7 +70,7 @@ class Game {
 
     if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(Globals.process_select.pid)
+        Globals.process_view = new ProcessView(Globals.process_select.pid, !Config.CAPTURE_MODE)
       }
       Globals.process_view.update()
     }
