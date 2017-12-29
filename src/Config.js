@@ -1,4 +1,5 @@
 module.exports = {
-  CAPTURE_MODE: true,
-  CAPTURE_PATH: "out.webm"
+  ASYNC_MODE: true,
+  CAPTURE_MODE: false,
+  CAPTURE_PATH: "test.mp4"
 }

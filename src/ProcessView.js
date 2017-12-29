@@ -118,7 +118,7 @@ class ProcessView {
           this.world_map[x+","+y] = this.getByteSync(x, y)
         }
 
-        let col = this.world_map[x+","+y]
+        let col = this.world_map[x+","+y] / 255
 
         if (col != 0) {
           position[pos_index++] = i * size

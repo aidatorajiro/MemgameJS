@@ -1,9 +1,13 @@
+const electron = require('electron')
+const createVideoRecorder = require('../electron-recorder/index')
+const win = electron.remote.getCurrentWindow()
+
 const ProcessView = require("./ProcessView")
 const ProcessSelect = require("./ProcessSelect")
 const Character = require("./Character")
-const Globals = require("./Globals")
-const Config = require("./Config")
-const Capturer = require("./Capturer")
+
+const Globals = require("./Globals.js")
+const Config = require("./Config.js")
 
 class Game {
   init () {
@@ -17,9 +21,17 @@ class Game {
     Globals.renderer.setSize( Globals.width, Globals.height )
     document.body.appendChild( Globals.renderer.domElement )
 
-    // capturer preparation
+
+    // capturer preparation (if Config.CAPTURE_MODE is set true)
     if (Config.CAPTURE_MODE) {
-      Globals.capturer = new Capturer(Config.CAPTURE_PATH)
+      Globals.capturer = createVideoRecorder(win, {
+        fps: 60,
+        output: Config.CAPTURE_PATH
+      })
+
+      win.on("closed", () => {
+        Globals.capturer.end()
+      })
     }
 
     // event handlers
@@ -60,12 +72,20 @@ class Game {
 
     if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(Globals.process_select.pid, !Config.CAPTURE_MODE)
+        Globals.process_view = new ProcessView(Globals.process_select.pid, Config.ASYNC_MODE)
       }
       Globals.process_view.update()
     }
 
-    requestAnimationFrame( () => { this.animate() } )
+    if (Config.CAPTURE_MODE) {
+      requestAnimationFrame( () => {
+        Globals.capturer.frame( () => {
+          this.animate()
+        })
+      })
+    } else {
+      requestAnimationFrame( () => { this.animate() } )
+    }
   }
 }
 

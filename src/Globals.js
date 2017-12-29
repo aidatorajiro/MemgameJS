@@ -1,5 +1,5 @@
 module.exports = {
-  capturer: undefined,
+  capturer: undefined, // used for the capture mode
   scene: undefined,
   camera: undefined,
   renderer: undefined,
