@@ -1,5 +1,4 @@
 const electron = require('electron')
-const createVideoRecorder = require('../electron-recorder/index')
 const win = electron.remote.getCurrentWindow()
 
 const ProcessView = require("./ProcessView")
@@ -20,19 +19,6 @@ class Game {
     Globals.renderer = new THREE.WebGLRenderer( { antialias: true } )
     Globals.renderer.setSize( Globals.width, Globals.height )
     document.body.appendChild( Globals.renderer.domElement )
-
-
-    // capturer preparation (if Config.CAPTURE_MODE is set true)
-    if (Config.CAPTURE_MODE) {
-      Globals.capturer = createVideoRecorder(win, {
-        fps: 60,
-        output: Config.CAPTURE_PATH
-      })
-
-      win.on("closed", () => {
-        Globals.capturer.end()
-      })
-    }
 
     // event handlers
     window.addEventListener('resize', () => { this.resize() }, false )
@@ -77,15 +63,7 @@ class Game {
       Globals.process_view.update()
     }
 
-    if (Config.CAPTURE_MODE) {
-      requestAnimationFrame( () => {
-        Globals.capturer.frame( () => {
-          this.animate()
-        })
-      })
-    } else {
-      requestAnimationFrame( () => { this.animate() } )
-    }
+    requestAnimationFrame( () => { this.animate() } )
   }
 }
 
