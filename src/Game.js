@@ -16,7 +16,7 @@ class Game {
 
     Globals.scene = new THREE.Scene()
 
-    Globals.renderer = new THREE.WebGLRenderer( { antialias: true } )
+    Globals.renderer = new THREE.WebGLRenderer( { antialias: false } )
     Globals.renderer.setSize( Globals.width, Globals.height )
     document.body.appendChild( Globals.renderer.domElement )
 

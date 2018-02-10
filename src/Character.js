@@ -11,7 +11,7 @@ class Character {
     this.coordinate = new THREE.Vector2(0, 0)
 
     this.material = new THREE.MeshBasicMaterial( { color: 0xffffff } )
-    this.geometry = new THREE.CircleGeometry( 3, 64 )
+    this.geometry = new THREE.CircleGeometry( 2.5, 32 )
     this.mesh = new THREE.Mesh( this.geometry, this.material )
 
     Globals.scene.add( this.mesh )
