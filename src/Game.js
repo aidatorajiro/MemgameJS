@@ -32,7 +32,8 @@ class Game {
     Globals.process_select = new ProcessSelect()
 
     // call animate func
-    this.animate()
+    this.last_time = 0
+    requestAnimationFrame( (time) => { this.animate(time) } )
   }
 
   resize () {
@@ -44,7 +45,10 @@ class Game {
     Globals.camera.updateProjectionMatrix()
   }
 
-  animate () {
+  animate (time) {
+    Globals.delta = time - this.last_time
+    this.last_time = time
+
     Globals.renderer.render( Globals.scene, Globals.camera )
 
     Globals.camera.position.x = Globals.character.coordinate.x
@@ -58,12 +62,12 @@ class Game {
 
     if (Globals.process_select.selected == true) {
       if (Globals.process_view === undefined) {
-        Globals.process_view = new ProcessView(Globals.process_select.pid, Config.ASYNC_MODE)
+        Globals.process_view = new ProcessView(Globals.process_select.pid)
       }
       Globals.process_view.update()
     }
 
-    requestAnimationFrame( () => { this.animate() } )
+    requestAnimationFrame( (time) => { this.animate(time) } )
   }
 }
 

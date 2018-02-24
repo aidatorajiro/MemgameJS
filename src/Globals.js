@@ -1,4 +1,5 @@
 module.exports = {
+  delta: undefined,
   scene: undefined,
   camera: undefined,
   renderer: undefined,

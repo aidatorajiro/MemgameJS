@@ -41,7 +41,8 @@ class Character {
     this.velocity.x *= 0.995
     this.velocity.y *= 0.995
 
-    this.coordinate.add(this.velocity)
+    this.coordinate.x += this.velocity.x * Globals.delta * 0.06
+    this.coordinate.y += this.velocity.y * Globals.delta * 0.06
 
     this.time += 1
   }
