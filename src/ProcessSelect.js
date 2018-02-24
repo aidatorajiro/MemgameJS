@@ -12,7 +12,16 @@ let font = new THREE.Font(suji)
 
 class ProcessSelect {
   constructor () {
-    this.pids = Pid.get_pids()
+    this.pids = Pid.get_pids().filter(
+      (x) => {
+        try {
+          new Memory(x).get_regions()
+          return true
+        } catch (e) {
+          return false
+        }
+      }
+    )
     this.pid = undefined
     this.selected = false
     this.finished = false

@@ -17,14 +17,29 @@ class ProcessView {
   constructor(pid, async=true) {
     this.isAsync = async
     this.tickcount = 0
-    this.tilesize = 20
+    this.rows = 20 // the number of tiles
 
     this.mem = new Memory(pid)
 
-    this.region = choice(this.mem.get_regions())
+    while (true) {
+      this.region = choice(this.mem.get_regions())
+      this.world_size = this.region[1]
+      this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
+      this.getAddress_offset_x = Math.floor(this.world_width / 2)
+      this.getAddress_offset_y = Math.floor(this.world_height / 2)
+      
+      let sum = 0;
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          sum += this.getByteSync(i,j);
+        }
+      }
 
-    this.world_size = this.region[1]
-    this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
+      if (sum > 1000) { 
+        break;
+      }
+    }
+
     this.world_map = {}
 
     this.world_geometry = new THREE.BufferGeometry()
@@ -34,9 +49,6 @@ class ProcessView {
     this.world_material = new THREE.PointsMaterial( { vertexColors: true, size: 18, sizeAttenuation: false } )
     this.world_points = new THREE.Points( this.world_geometry, this.world_material )
     Globals.scene.add( this.world_points )
-
-    this.getAddress_offset_x = Math.floor(this.world_width / 2)
-    this.getAddress_offset_y = Math.floor(this.world_height / 2)
 
     // if async, do an infinite loop of update_map_async on constructing.
     // if not async, the frame update function "update()" will update world_map.
