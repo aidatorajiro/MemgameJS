@@ -1,31 +1,29 @@
 language: objective-c
 cache:
   directories:
-    - node_modules
+  - node_modules
 env:
-  - NODE_VERSION="8.9"
+- NODE_VERSION="8.9"
 before_install:
-  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
-  - source /tmp/.nvm/nvm.sh
-  - nvm install $NODE_VERSION
-  - nvm use --delete-prefix $NODE_VERSION
-  - node --version
+- git clone https://github.com/creationix/nvm.git /tmp/.nvm
+- source /tmp/.nvm/nvm.sh
+- nvm install $NODE_VERSION
+- nvm use --delete-prefix $NODE_VERSION
+- node --version
 install:
-  - npm install
+- npm install
 script:
-  - npm test
+- npm test
 before_deploy:
-  - brew update
-  - brew install wine
-  - wine --version
-  - brew install makensis
-  - npm run build:osx
+- brew update
+- brew install wine
+- wine --version
+- brew install makensis
+- npm run build:osx
 deploy:
   provider: releases
-  file:
-    - dist/Memgame-darwin-x64.zip
-  skip_cleanup: true
+  api_key:
+    secure: C4AiFrGt1oi9polzm2w2OaEicK199sK8ZUsslflD9W1Go55DBn2BYzWmIMQ1RQlSh3I8JIwnMHkKQcpegGkIy+4L44jIqyitiaJA+BM4ORxqNgGG1Lkddk54SflopjgJsDyLT60Y62mAm8nbF+QXV2zYUcb9Cmjx29Nca7zybUC5Xcq2N1YAk4ijRNhtoj7vRi3LMr5s1xnlN/k5KTQ+Q5zJWOfPAzq65d33SPqfwPy7vRXTrM24Ace7ktLGqtaMWI+l+xs3KJnt4jQ4AHPuVtNflq4qxA3xI7S6A8jVnNEDHw/VLg81Pr6VW2L+72hVTWxNf4l/NaFisE3OwlN/bB9N0Su80sEubYD+AdxNuWTuYnAgftzEHSoLW74nUgcf3X021P4bl7QxzOTQv8D70e7XlD8jpEFStZWeokF/032fcqKevMsHOeBhssPkvW1Xl8+aHO/yW6Z8v6HTQfpQb70Ynvf+KsFWQT2nQhom2BeENhTD9aelSKGNrOAzXgdI0xuWC1DoAEDqLc3UxphTpoMo9VkT05D4B/1VGw38mJBBSGbZdKBsr+xWjpmagByrn2AzJHjIa5wgZYW8gXOBhQUsCcfF22mdmIrfk+UOa0mT7LQ8FOi79kHWRU0qNQbz4oOaojVE8j08cqWs2WcZJ1To+V7fZXBtVJ7+8kWzaEc=
+  file: dist/Memgame-darwin-x64.zip
   on:
     repo: aidatorajiro/MemgameJS
-    tags: true
-    all_branches: true
