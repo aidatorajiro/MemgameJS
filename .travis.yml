@@ -1,0 +1,31 @@
+language: objective-c
+cache:
+  directories:
+    - node_modules
+env:
+  - NODE_VERSION="8.9"
+before_install:
+  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+  - source /tmp/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use --delete-prefix $NODE_VERSION
+  - node --version
+install:
+  - npm install
+script:
+  - npm test
+before_deploy:
+  - brew update
+  - brew install wine
+  - wine --version
+  - brew install makensis
+  - npm run build
+deploy:
+  provider: releases
+  file:
+    - dist/Memgame-darwin-x64.zip
+  skip_cleanup: true
+  on:
+    repo: aidatorajiro/MemgameJS
+    tags: true
+    all_branches: true
