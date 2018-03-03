@@ -19,7 +19,7 @@ before_deploy:
   - brew install wine
   - wine --version
   - brew install makensis
-  - npm run build
+  - npm run build:osx
 deploy:
   provider: releases
   file:
