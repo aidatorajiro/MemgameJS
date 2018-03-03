@@ -3,7 +3,6 @@ const suji = require("./suji.json")
 const Globals = require("./Globals")
 const Memory = require("./Memory")
 
-let cols = 10
 let width = 90
 let height = 90
 let interval_x = 150
@@ -28,6 +27,8 @@ class ProcessSelect {
 
     this.progress = 0
 
+    this.cols = Math.floor(Math.sqrt(this.pids.length))
+
     // create overwrap block
     {
       let geometry = new THREE.PlaneGeometry( width - 2, height - 2, 1, 1 )
@@ -44,8 +45,8 @@ class ProcessSelect {
     this.blocks = []
     this.labels = []
     for (let i in this.pids) {
-      let x = (i % cols - cols / 2 + 0.5) * interval_x
-      let y = (Math.floor(i / cols) - Math.floor(this.pids.length / cols)) * interval_y
+      let x = (i % this.cols - this.cols / 2 + 0.5) * interval_x
+      let y = (Math.floor(i / this.cols) - Math.floor(this.pids.length / this.cols)) * interval_y
 
       // block
       {
