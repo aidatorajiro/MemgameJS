@@ -20,6 +20,7 @@ before_deploy:
 - wine --version
 - brew install makensis
 - npm run build:osx
+- rm package-lock.json
 deploy:
   provider: releases
   api_key:
