@@ -28,3 +28,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: aidatorajiro/MemgameJS
+    all_branches: true
