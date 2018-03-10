@@ -1,3 +1,10 @@
+/**
+Copyright (c) 2018 Torajiro Aida
+
+This software is released under the MIT License.
+http://opensource.org/licenses/mit-license.php
+*/
+
 const Pid = require("./Pid")
 const suji = require("./suji.json")
 const Globals = require("./Globals")
