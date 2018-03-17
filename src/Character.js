@@ -28,8 +28,8 @@ class Character {
   // input: click event position on window
   on_click (vec) {
     this.eases.push([new THREE.Vector2(
-      Math.atan((vec.x-Globals.width/2)*0.04)*0.1,
-      Math.atan((-vec.y+Globals.height/2)*0.04)*0.1
+      Math.atan((vec.x-Globals.width/2)*0.04)*0.03,
+      Math.atan((-vec.y+Globals.height/2)*0.04)*0.03
     ), this.time])
   }
 

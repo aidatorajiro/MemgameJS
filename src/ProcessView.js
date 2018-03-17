@@ -18,12 +18,12 @@ let choice = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-let MAX_POINTS = 10000
+let MAX_POINTS = 1600
 
 class ProcessView {
   constructor(pid) {
     this.tickcount = 0
-    this.rows = 10 // the number of tiles / 2
+    this.rows = 20 // the number of tiles / 2
     this.tilesize = Math.floor(Globals.width / this.rows / 2)
 
     this.mem = new Memory(pid)
