@@ -9,7 +9,7 @@ npm install && npm start
 
 ## How to play
 
-Japanese -> HOWTOPLAY.ja.md
+Japanese -> HOWTOPLAY.ja.md 
 English -> HOWTOPLAY.en.md
 
 ## LICENSE
