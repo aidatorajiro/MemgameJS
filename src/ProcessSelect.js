@@ -136,14 +136,7 @@ class ProcessSelect {
     }
 
     // calculate the index of current selecting block
-    let index = null
-    let c = Globals.character.coordinate
-    let ray = new THREE.Raycaster(new THREE.Vector3(c.x, c.y, 0), new THREE.Vector3(0, 0, -1))
-    for(let i in this.blocks) {
-      if (ray.intersectObject(this.blocks[i]).length > 0) {
-        index = i
-      }
-    }
+    let index = Math.floor(Math.random() * this.blocks.length) // for exhibits, use random value
 
     // decorate block
     let overwrap = this.overwrap
