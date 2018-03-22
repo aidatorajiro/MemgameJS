@@ -51,7 +51,7 @@ class ProcessView {
     this.world_geometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( MAX_POINTS * 3 ), 3 ) )
     this.world_geometry.addAttribute( 'color'   , new THREE.BufferAttribute( new Float32Array( MAX_POINTS * 3 ), 3 ) )
 
-    this.world_material = new THREE.PointsMaterial( { vertexColors: true, size: this.tilesize - 2, sizeAttenuation: false } )
+    this.world_material = new THREE.PointsMaterial( { vertexColors: true, size: Math.floor(this.tilesize*0.90), sizeAttenuation: false } )
     this.world_points = new THREE.Points( this.world_geometry, this.world_material )
     Globals.scene.add( this.world_points )
   }
