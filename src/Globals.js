@@ -11,9 +11,10 @@ module.exports = {
   camera: undefined,
   renderer: undefined,
   game: undefined,
-  process_select: undefined,
-  process_view: undefined,
+  processSelect: undefined,
+  processView: undefined,
   character: undefined,
+  footprints: undefined,
   get width () {
     return window.innerWidth
   },

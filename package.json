@@ -22,10 +22,14 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "1.7.9",
-    "electron-packager": "^11.0.1"
+    "electron-packager": "^11.0.1",
+    "standard": "^11.0.1"
   },
   "dependencies": {
     "ffi": "^2.2.0",
     "three": "^0.88.0"
+  },
+  "standard": {
+    "globals": [ "THREE", "requestAnimationFrame" ]
   }
 }

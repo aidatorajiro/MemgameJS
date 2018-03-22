@@ -5,86 +5,89 @@ This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
 
-const ref = require('ref');
-const ffi = require('ffi');
-const Struct = require('ref-struct');
+const ref = require('ref')
+const ffi = require('ffi')
+const Struct = require('ref-struct')
 
 let RegionInfo = Struct({
-  'protection':     'uint32',
-  'max_protection':   'uint32',
-  'inheritance':    'uint32',
-  'shared':       'uint32',
-  'reserved':     'uint32',
-  'offset':       'ulonglong',
-  'behavior':     'uint32',
+  'protection': 'uint32',
+  'max_protection': 'uint32',
+  'inheritance': 'uint32',
+  'shared': 'uint32',
+  'reserved': 'uint32',
+  'offset': 'ulonglong',
+  'behavior': 'uint32',
   'user_wired_count': 'ushort'
-});
+})
 
-let RegionInfoPtr = ref.refType(RegionInfo);
+let RegionInfoPtr = ref.refType(RegionInfo)
 
-let libc = ffi.Library("libc", {
-  "mach_task_self": ["uint", []],
-  "task_for_pid": ["int", ["uint", "int", "*uint"]],
-  "mach_vm_region": ["int", ["uint", "*ulong", "*ulong", "int", RegionInfoPtr, "*uint32", "*uint32"]],
-  "mach_vm_read": ["int", ["uint", "ulonglong", "ulonglong", "*void", "*uint32"]]
+let libc = ffi.Library('libc', {
+  'mach_task_self': ['uint', []],
+  'task_for_pid': ['int', ['uint', 'int', '*uint']],
+  'mach_vm_region': ['int', ['uint', '*ulong', '*ulong', 'int', RegionInfoPtr, '*uint32', '*uint32']],
+  'mach_vm_read': ['int', ['uint', 'ulonglong', 'ulonglong', '*void', '*uint32']]
 })
 
 class Memory {
-  constructor(pid) {
-    let task_ref = ref.alloc("uint", 0)
+  constructor (pid) {
+    let taskRef = ref.alloc('uint', 0)
     let mytask = libc.mach_task_self()
-    let ret = libc.task_for_pid(mytask, pid, task_ref)
-    if (ret != 0) {
-      throw new Error("task_for_pid error " + ret);
+    let ret = libc.task_for_pid(mytask, pid, taskRef)
+    if (ret !== 0) {
+      throw new Error('task_for_pid error ' + ret)
     }
 
-    this.task = task_ref.deref()
+    this.task = taskRef.deref()
   }
-  
-  get_regions() {
+
+  getRegions () {
     let regions = []
-    let address = ref.alloc("ulong", 0)
-    let mapsize = ref.alloc("ulong", 0)
-    let name  = ref.alloc("uint32", 0)
-    let count   = ref.alloc("uint32", RegionInfo.size / 4)
-    let info  = new RegionInfo()
-    
+    let address = ref.alloc('ulong', 0)
+    let mapsize = ref.alloc('ulong', 0)
+    let name = ref.alloc('uint32', 0)
+    let count = ref.alloc('uint32', RegionInfo.size / 4)
+    let info = new RegionInfo()
+
     while (true) {
       let ret = libc.mach_vm_region(this.task, address, mapsize, 9, info.ref(), count, name)
-      if (ret == 1) {
-        break;
+      if (ret === 1) {
+        break
       }
-      if (ret != 0) {
-        throw new Error("mach_vm_region error " + ret)
+      if (ret !== 0) {
+        throw new Error('mach_vm_region error ' + ret)
       }
-      
+
       regions.push([address.deref(), mapsize.deref()])
-      
+
       address.writeUInt64LE(address.deref() + mapsize.deref())
     }
-    
-    return regions;
+
+    return regions
   }
 
-  read(address, length) {
-    let detaref = ref.alloc("*void")
-    let cnt = ref.alloc("uint32", 0)
+  read (address, length) {
+    let detaref = ref.alloc('*void')
+    let cnt = ref.alloc('uint32', 0)
 
     let ret = libc.mach_vm_read(this.task, address, length, detaref, cnt)
-    if (ret != 0) {
-      throw new Error("mach_vm_read error " + ret)
+    if (ret !== 0) {
+      throw new Error('mach_vm_read error ' + ret)
     }
     return detaref.readPointer(0, length)
   }
 
-  read_async(address, length) {
-    let detaref = ref.alloc("*void")
-    let cnt = ref.alloc("uint32", 0)
+  readAsync (address, length) {
+    let detaref = ref.alloc('*void')
+    let cnt = ref.alloc('uint32', 0)
 
     return new Promise((resolve, reject) => {
       libc.mach_vm_read.async(this.task, address, length, detaref, cnt, (err, ret) => {
-        if (ret != 0) {
-          reject("mach_vm_read error " + ret)
+        if (err) {
+          reject(new Error('mach_vm_read error ' + err))
+        }
+        if (ret !== 0) {
+          reject(new Error('mach_vm_read error ' + ret))
         }
         resolve(detaref.readPointer(0, length))
       })
