@@ -5,6 +5,8 @@ This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
 
+const THREE = require('THREE')
+
 const Pid = require('./Pid')
 const suji = require('./suji.json')
 const Globals = require('./Globals')
@@ -31,6 +33,9 @@ class ProcessSelect {
     this.pid = undefined
     this.selected = false
     this.finished = false
+
+    // calculate the index of current selecting block. For exhibits, use random value.
+    this.index = Math.floor(Math.random() * this.pids.length)
 
     this.progress = 0
 
@@ -117,14 +122,6 @@ class ProcessSelect {
 
     // After selecting
     if (this.progress >= 1) {
-      // make sure that pid is correct
-      try {
-        new Memory(this.pid).getRegions()
-      } catch (e) {
-        this.progress = 0
-        return
-      }
-
       // fade blocks
       for (let m of this.blocks) {
         m.material.opacity -= 0.015
@@ -135,14 +132,11 @@ class ProcessSelect {
       return
     }
 
-    // calculate the index of current selecting block
-    let index = Math.floor(Math.random() * this.blocks.length) // for exhibits, use random value
-
     // decorate block
     let overwrap = this.overwrap
 
-    if (index !== null) {
-      let mesh = this.blocks[index]
+    if (this.index !== null) {
+      let mesh = this.blocks[this.index]
 
       overwrap.position.x = mesh.position.x
       overwrap.position.y = mesh.position.y
@@ -157,7 +151,7 @@ class ProcessSelect {
           1 + (0.364 - 1) * this.progress,
           1 + (0.698 - 1) * this.progress)
 
-      this.pid = this.pids[index]
+      this.pid = this.pids[this.index]
 
       this.progress += 0.005
     } else {

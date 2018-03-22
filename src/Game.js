@@ -5,6 +5,8 @@ This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
 
+const THREE = require('THREE')
+
 const ProcessView = require('./ProcessView')
 const ProcessSelect = require('./ProcessSelect')
 const Character = require('./Character')
@@ -32,9 +34,9 @@ class Game {
     }, false)
 
     // construct objects
+    Globals.footprints = new Footprints()
     Globals.character = new Character()
     Globals.processSelect = new ProcessSelect()
-    Globals.footprints = new Footprints()
 
     // call animate func
     this.last_time = 0
@@ -59,8 +61,8 @@ class Game {
     Globals.camera.position.x = Globals.character.coordinate.x
     Globals.camera.position.y = Globals.character.coordinate.y
 
-    Globals.character.update()
     Globals.footprints.update()
+    Globals.character.update()
 
     if (Globals.processSelect.finished === false) {
       Globals.processSelect.update()

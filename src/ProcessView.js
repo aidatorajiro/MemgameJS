@@ -5,6 +5,9 @@ This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
 
+const THREE = require('THREE')
+const _ = require('lodash')
+
 const Memory = require('./Memory')
 const Globals = require('./Globals')
 
@@ -13,23 +16,18 @@ let mod = function (n, m) {
   return ((n % m) + m) % m
 }
 
-// choose one element randomly from array
-let choice = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
-
-let MAX_POINTS = 1600
+let MAX_POINTS = 2000
 
 class ProcessView {
   constructor (pid) {
     this.tickcount = 0
-    this.rows = 20 // the number of tiles / 2
+    this.rows = 20 // the number of tiles ÷ 2
     this.tilesize = Math.floor(Globals.width / this.rows / 2)
 
     this.mem = new Memory(pid)
 
     while (true) {
-      this.region = choice(this.mem.getRegions())
+      this.region = _.sample(this.mem.getRegions())
       this.world_size = this.region[1]
       this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
       this.getAddress_offset_x = Math.floor(this.world_width / 2)
@@ -80,7 +78,7 @@ class ProcessView {
     this.world_points.position.y = cy * this.tilesize
 
     let position = this.world_geometry.attributes.position.array
-    let array = this.world_geometry.attributes.color.array
+    let color = this.world_geometry.attributes.color.array
 
     let posIndex = 0
     let colIndex = 0
@@ -93,14 +91,14 @@ class ProcessView {
 
         let col = this.getByteSync(x, y) / 255
 
-        if (col != 0) {
+        if (col !== 0) {
           position[posIndex++] = i * this.tilesize
           position[posIndex++] = j * this.tilesize
           position[posIndex++] = 0
 
-          array[colIndex++] = col
-          array[colIndex++] = col
-          array[colIndex++] = col
+          color[colIndex++] = col
+          color[colIndex++] = col
+          color[colIndex++] = col
 
           vertIndex++
         }
