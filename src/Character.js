@@ -18,7 +18,7 @@ class Character {
     this.coordinate = new THREE.Vector2(0, 0)
 
     this.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
-    this.geometry = new THREE.CircleGeometry(2.5, 32)
+    this.geometry = new THREE.PlaneGeometry(5, 5, 32)
     this.mesh = new THREE.Mesh(this.geometry, this.material)
 
     Globals.scene.add(this.mesh)
@@ -27,10 +27,11 @@ class Character {
   // click event handler
   // input: click event position on window
   onClick (vec) {
-    this.eases.push([new THREE.Vector2(
-      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.03,
-      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.03
-    ), this.time])
+    this.eases.push([
+      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.05 * Globals.delta * 0.06,
+      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.05 * Globals.delta * 0.06,
+      this.time
+    ])
   }
 
   update () {
@@ -38,18 +39,17 @@ class Character {
     this.mesh.position.y = this.coordinate.y
 
     for (let i of this.eases) {
-      let coefficient = i[0]
-      let t = this.time - i[1] - 5
+      let t = this.time - i[2] - 5
 
-      this.velocity.x += coefficient.x / (0.1 * t * t + 1)
-      this.velocity.y += coefficient.y / (0.1 * t * t + 1)
+      this.velocity.x += i[0] / (0.1 * t * t + 1)
+      this.velocity.y += i[1] / (0.1 * t * t + 1)
     }
 
     this.velocity.x *= 0.995
     this.velocity.y *= 0.995
 
-    this.coordinate.x += this.velocity.x * Globals.delta * 0.06
-    this.coordinate.y += this.velocity.y * Globals.delta * 0.06
+    this.coordinate.x += this.velocity.x
+    this.coordinate.y += this.velocity.y
 
     this.time += 1
   }

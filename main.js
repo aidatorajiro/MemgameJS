@@ -22,6 +22,16 @@ function createWindow () {
     slashes: true
   }))
 
+  setInterval(() => {
+    if (mainWindow !== null) {
+      mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file:',
+        slashes: true
+      }))
+    }
+  }, 3600000)
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 

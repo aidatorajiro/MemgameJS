@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "ffi": "^2.2.0",
-    "lodash": "^4.17.5",
     "three": "^0.88.0"
   },
   "standard": {

@@ -6,7 +6,6 @@ http://opensource.org/licenses/mit-license.php
 */
 
 const THREE = require('THREE')
-const _ = require('lodash')
 
 const Memory = require('./Memory')
 const Globals = require('./Globals')
@@ -14,6 +13,11 @@ const Globals = require('./Globals')
 // mathematical modulo
 let mod = function (n, m) {
   return ((n % m) + m) % m
+}
+
+// random coice from an array
+function choice (arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
 }
 
 let MAX_POINTS = 2000
@@ -27,7 +31,7 @@ class ProcessView {
     this.mem = new Memory(pid)
 
     while (true) {
-      this.region = _.sample(this.mem.getRegions())
+      this.region = choice(this.mem.getRegions())
       this.world_size = this.region[1]
       this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
       this.getAddress_offset_x = Math.floor(this.world_width / 2)
@@ -40,7 +44,7 @@ class ProcessView {
         }
       }
 
-      if (sum > 1000) {
+      if (sum > 0) {
         break
       }
     }

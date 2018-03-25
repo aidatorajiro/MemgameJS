@@ -8,6 +8,8 @@ http://opensource.org/licenses/mit-license.php
 const THREE = require('THREE')
 const Globals = require('./Globals')
 
+let MAX_POINTS = 100
+
 function shuffle (array) {
   let n = array.length
   let t
@@ -23,14 +25,12 @@ function shuffle (array) {
   return array
 }
 
-let MAX_POINTS = 100
-
 class Footprints {
   constructor () {
     this.points_geometry = new THREE.BufferGeometry()
     this.points_geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(MAX_POINTS * 3), 3))
     this.points_geometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(MAX_POINTS * 3), 3))
-    this.points_material = new THREE.PointsMaterial({ vertexColors: true, size: 2, sizeAttenuation: false })
+    this.points_material = new THREE.PointsMaterial({ vertexColors: true, size: 3, sizeAttenuation: false })
     this.points = new THREE.Points(this.points_geometry, this.points_material)
     Globals.scene.add(this.points)
 
@@ -39,11 +39,13 @@ class Footprints {
   }
 
   update () {
+    this.coordinates_and_colors = this.coordinates_and_colors.filter((x) => (x[2] > 0.01))
+
     this.coordinates_and_colors.push([Globals.character.coordinate.x, Globals.character.coordinate.y, 1])
     shuffle(this.coordinates_and_colors)
 
-    this.points.position.x = Globals.character.coordinate.x
-    this.points.position.y = Globals.character.coordinate.y
+    this.points.position.x = Globals.character.coordinate.x - 0.5
+    this.points.position.y = Globals.character.coordinate.y - 0.5
 
     let position = this.points_geometry.attributes.position.array
     let color = this.points_geometry.attributes.color.array
@@ -52,26 +54,24 @@ class Footprints {
     let colIndex = 0
 
     for (let i in this.coordinates_and_colors) {
-      position[posIndex++] = this.coordinates_and_colors[i][0] - Globals.character.coordinate.x
-      position[posIndex++] = this.coordinates_and_colors[i][1] - Globals.character.coordinate.y
+      let x = this.coordinates_and_colors[i][0]
+      let y = this.coordinates_and_colors[i][1]
+      let c = this.coordinates_and_colors[i][2] // the color of footprint
+
+      position[posIndex++] = x - Globals.character.coordinate.x
+      position[posIndex++] = y - Globals.character.coordinate.y
       position[posIndex++] = 0
 
-      color[colIndex++] = this.coordinates_and_colors[i][2]
-      color[colIndex++] = this.coordinates_and_colors[i][2]
-      color[colIndex++] = this.coordinates_and_colors[i][2]
+      color[colIndex++] = c
+      color[colIndex++] = c
+      color[colIndex++] = c
 
       this.coordinates_and_colors[i][2] *= 0.95
     }
 
     this.points_geometry.attributes.position.needsUpdate = true
     this.points_geometry.attributes.color.needsUpdate = true
-    this.points_geometry.setDrawRange(0, this.coordinates_and_colors.length - 1)
-
-    for (let i in this.coordinates_and_colors) {
-      if (this.coordinates_and_colors[i][2] < 0.01) {
-        this.coordinates_and_colors.splice(i, 1)
-      }
-    }
+    this.points_geometry.setDrawRange(0, this.coordinates_and_colors.length)
   }
 }
 
