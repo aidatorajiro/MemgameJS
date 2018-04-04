@@ -30,18 +30,15 @@ class ProcessView {
 
     this.mem = new Memory(pid)
 
-    {
-      this.region = choice(this.mem.getRegions())
-      this.world_size = this.region[1]
-      this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
-      this.getAddress_offset_x = Math.floor(this.world_width / 2)
-      this.getAddress_offset_y = Math.floor(this.world_height / 2)
+    this.region = choice(this.mem.getRegions())
+    this.world_size = this.region[1]
+    this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
+    this.getAddress_offset_x = Math.floor(this.world_width / 2)
+    this.getAddress_offset_y = Math.floor(this.world_height / 2)
 
-      let sum = 0
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-          sum += this.getByteSync(i, j)
-        }
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.getByteSync(i, j)
       }
     }
 

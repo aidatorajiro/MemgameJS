@@ -4,8 +4,6 @@ Copyright (c) 2018 Torajiro Aida
 This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
-
-const ref = require('ref')
 const ffi = require('ffi')
 const Struct = require('ref-struct')
 
@@ -31,8 +29,6 @@ let RegionInfo = Struct({
   'Protect': 'ulong',
   'Type': 'ulong'
 })
-
-let RegionInfoPtr = ref.refType(RegionInfo)
 
 // 32 bit
 // let Kernel32 = ffi.Library('Kernel32', {
@@ -61,22 +57,22 @@ class Memory {
     let current = 0
     let regions = []
     for (let i = 0; i < 20000; i++) {
-      let ret = Kernel32.VirtualQueryEx(this.handle, current, info.ref(), info.ref().length)
+      Kernel32.VirtualQueryEx(this.handle, current, info.ref(), info.ref().length)
       if (info.State === 0x1000) {
         regions.push([current, info.RegionSize])
       }
       current += info.RegionSize
     }
-    return regions;
+    return regions
   }
 
   read (address, length) {
-    let buf = new Buffer(length)
+    let buf = Buffer.alloc(length)
     let ret = Kernel32.ReadProcessMemory(this.handle, address, buf, length, 0)
     if (ret === false) {
       throw new Error('ReadProcessMemory errored')
     }
-    return buf;
+    return buf
   }
 
   readAsync (address, length) {
