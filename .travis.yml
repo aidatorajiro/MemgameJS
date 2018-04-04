@@ -1,7 +1,4 @@
 language: objective-c
-cache:
-  directories:
-  - node_modules
 env:
 - NODE_VERSION="8.9"
 before_install:
