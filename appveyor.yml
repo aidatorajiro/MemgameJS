@@ -6,7 +6,7 @@ install:
   - npm config set msvs_version 2015
   - npm install
   - npm run pack:win
-  - 7z a dist/Memgame-win32-x64 dist/Memgame-win32-x64.zip
+  - 7z a dist/Memgame-win32-x64.zip dist/Memgame-win32-x64
 test_script:
   - npm run lint
 build: off
