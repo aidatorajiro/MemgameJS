@@ -15,6 +15,8 @@ configuration: Release
 deploy:
   - provider: GitHub
     artifact: dist/Memgame-win32-x64.zip
+    auth_token:
+      secure: vGZUzRCWDmJIbfKMrKlxwgAUDNZTDo0HArTERedaOUpSRtUzcr/n06YL9vHC4GSI
     on:
       appveyor_repo_tag: true
 artifacts:

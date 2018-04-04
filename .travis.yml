@@ -12,8 +12,7 @@ install:
 script:
 - npm run lint
 - npm run pack:osx
-- cd dist
-- zip -r Memgame-darwin-x64.zip Memgame-darwin-x64
+- cd dist; zip -r Memgame-darwin-x64.zip Memgame-darwin-x64; cd ..
 deploy:
   provider: releases
   api_key:
