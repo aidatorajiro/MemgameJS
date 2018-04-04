@@ -16,8 +16,19 @@ let mod = function (n, m) {
 }
 
 // random coice from an array
-function choice (arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
+function shuffle (array) {
+  let n = array.length
+  let t
+  let i
+
+  while (n) {
+    i = Math.floor(Math.random() * n--)
+    t = array[n]
+    array[n] = array[i]
+    array[i] = t
+  }
+
+  return array
 }
 
 let MAX_POINTS = 2000
@@ -30,15 +41,22 @@ class ProcessView {
 
     this.mem = new Memory(pid)
 
-    this.region = choice(this.mem.getRegions())
-    this.world_size = this.region[1]
-    this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
-    this.getAddress_offset_x = Math.floor(this.world_width / 2)
-    this.getAddress_offset_y = Math.floor(this.world_height / 2)
+    for (let region of shuffle(this.mem.getRegions())) {
+      this.region = region
+      this.world_size = this.region[1]
+      this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
+      this.getAddress_offset_x = Math.floor(this.world_width / 2)
+      this.getAddress_offset_y = Math.floor(this.world_height / 2)
 
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        this.getByteSync(i, j)
+      let sum = 0
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          sum += this.getByteSync(i, j)
+        }
+      }
+
+      if (sum > 0) {
+        break
       }
     }
 

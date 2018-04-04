@@ -67,14 +67,14 @@ class Memory {
   }
 
   read (address, length) {
-    let detaref = ref.alloc('*void')
+    let dataref = ref.alloc('*void')
     let cnt = ref.alloc('uint32', 0)
 
-    let ret = libc.mach_vm_read(this.task, address, length, detaref, cnt)
+    let ret = libc.mach_vm_read(this.task, address, length, dataref, cnt)
     if (ret !== 0) {
       throw new Error('mach_vm_read error ' + ret)
     }
-    return detaref.readPointer(0, length)
+    return dataref.readPointer(0, length)
   }
 
   readAsync (address, length) {
