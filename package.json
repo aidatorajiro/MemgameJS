@@ -7,7 +7,7 @@
     "start": "electron .",
     "lint": "standard",
     "pack:osx": "rm -rf ./dist/Memgame-darwin-x64 && electron-packager . \"Memgame\" --platform=darwin --arch=x64 --version=1.7.9 --no-prune --out=\"dist\"",
-    "pack:win": "rm -rf ./dist/Memgame-win32-ia32 && electron-packager . \"Memgame\" --platform=win32 --arch=ia32 --version=1.7.9 --no-prune --out=\"dist\"",
+    "pack:win": "rm -rf ./dist/Memgame-win32-x64 && electron-packager . \"Memgame\" --platform=win32 --arch=x64 --version=1.7.9 --no-prune --out=\"dist\"",
     "build:osx": "npm run pack:osx && zip -r \"dist/Memgame-darwin-x64.zip\" \"dist/Memgame-darwin-x64\"",
     "build:win": "npm run pack:win && zip -r \"dist/Memgame-win32-ia32.zip\" \"dist/Memgame-win32-ia32\""
   },

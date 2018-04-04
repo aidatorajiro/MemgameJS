@@ -15,10 +15,6 @@ install:
 script:
 - npm run lint
 before_deploy:
-- brew update
-- brew install wine
-- wine --version
-- brew install makensis
 - npm run build:osx
 deploy:
   provider: releases
