@@ -9,7 +9,9 @@ install:
   - npm install
 test_script:
   - npm run lint
+build: off
 platform: x64
+configuration: Release
 before_deploy:
   - npm run build:win
 deploy:
