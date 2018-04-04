@@ -11,10 +11,14 @@ build: off
 platform: x64
 configuration: Release
 before_deploy:
-  - npm run build:win
+  - npm run pack:win
+  - cd dist
+  - 7z a Memgame-win32-x64 Memgame-win32-x64.zip
 deploy:
-- provider: GitHub
-  artifact: dist/Memgame-win32-x64.zip
-  on:
-    appveyor_repo_tag: true
-
+  - provider: GitHub
+    artifact: dist/Memgame-win32-x64.zip
+    on:
+      appveyor_repo_tag: true
+artifacts:
+  - path: dist/Memgame-win32-x64.zip
+    name: Memgame-win32-x64
