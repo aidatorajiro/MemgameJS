@@ -30,7 +30,7 @@ class ProcessView {
 
     this.mem = new Memory(pid)
 
-    while (true) {
+    {
       this.region = choice(this.mem.getRegions())
       this.world_size = this.region[1]
       this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
@@ -42,10 +42,6 @@ class ProcessView {
         for (let j = 0; j < 10; j++) {
           sum += this.getByteSync(i, j)
         }
-      }
-
-      if (sum > 0) {
-        break
       }
     }
 

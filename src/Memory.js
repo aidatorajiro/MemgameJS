@@ -3,7 +3,7 @@ if (process.platform === 'darwin') {
 } else if (process.platform === 'linux') {
   throw new Error('not yet inplemented on linux')
 } else if (process.platform === 'win32') {
-  throw new Error('not yet inplemented on windows')
+  module.exports = require('./WinMemory')
 } else {
   throw new Error('not yet inplemented on your operating system')
 }
