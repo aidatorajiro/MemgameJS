@@ -56,10 +56,14 @@ class Memory {
     let info = new RegionInfo()
     let current = 0
     let regions = []
-    for (let i = 0; i < 20000; i++) {
-      Kernel32.VirtualQueryEx(this.handle, current, info.ref(), info.ref().length)
+    while (current < 0x7FFFFFFF) {
+      let ret = Kernel32.VirtualQueryEx(this.handle, current, info.ref(), info.ref().length)
       if (info.State === 0x1000) {
         regions.push([current, info.RegionSize])
+      }
+      if (ret !== 48) {
+        console.log(info)
+        break
       }
       current += info.RegionSize
     }

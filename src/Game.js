@@ -26,21 +26,23 @@ class Game {
     Globals.renderer.setSize(Globals.width, Globals.height)
     document.body.appendChild(Globals.renderer.domElement)
 
-    // event handlers
-    window.addEventListener('resize', () => { this.resize() }, false)
-
-    window.addEventListener('mousedown', function (ev) {
-      Globals.character.onClick(new THREE.Vector2(ev.clientX, ev.clientY))
-    }, false)
-
     // construct objects
     Globals.footprints = new Footprints()
     Globals.character = new Character()
     Globals.processSelect = new ProcessSelect()
 
     // call animate func
-    this.last_time = 0
-    requestAnimationFrame((time) => { this.animate(time) })
+    requestAnimationFrame((time) => {
+      // event handlers
+      window.addEventListener('resize', () => { this.resize() }, false)
+
+      window.addEventListener('mousedown', function (ev) {
+        Globals.character.onClick(new THREE.Vector2(ev.clientX, ev.clientY))
+      }, false)
+
+      this.last_time = 0
+      this.animate(time)
+    })
   }
 
   resize () {

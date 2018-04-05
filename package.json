@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "lint": "standard",
-    "pack:osx": "rm -rf ./dist/Memgame-darwin-x64 && electron-packager . \"Memgame\" --platform=darwin --arch=x64 --version=1.7.9 --no-prune --out=\"dist\"",
-    "pack:win": "rm -rf ./dist/Memgame-win32-x64 && electron-packager . \"Memgame\" --platform=win32 --arch=x64 --version=1.7.9 --no-prune --out=\"dist\""
+    "pack:osx": "electron-packager . \"Memgame\" --platform=darwin --arch=x64 --version=1.8.4 --out=\"dist\" --overwrite && cd dist/Memgame-darwin-x64/resources/app & npm install --production",
+    "pack:win": "electron-packager . \"Memgame\" --platform=win32 --arch=x64 --version=1.8.4 --out=\"dist\" --overwrite & cd dist/Memgame-win32-x64/resources/app & npm install --production"
   },
   "repository": "https://github.com/aidatorajiro/memgame",
   "keywords": [
@@ -21,7 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "1.8.4",
-    "electron-packager": "^11.0.1",
+    "electron-packager": "^12.0.0",
     "standard": "^11.0.1"
   },
   "dependencies": {
