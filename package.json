@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "lint": "standard",
-    "pack:osx": "electron-packager . \"Memgame\" --platform=darwin --arch=x64 --version=1.8.4 --out=\"dist\" --overwrite && cd dist/Memgame-darwin-x64/resources/app & npm install --production",
+    "pack:osx": "electron-packager . \"Memgame\" --platform=darwin --arch=x64 --version=1.8.4 --out=\"dist\" --overwrite && cd dist/Memgame-darwin-x64/Memgame.app/Contents/Resources/app & npm install --production",
     "pack:win": "electron-packager . \"Memgame\" --platform=win32 --arch=x64 --version=1.8.4 --out=\"dist\" --overwrite & cd dist/Memgame-win32-x64/resources/app & npm install --production"
   },
   "repository": "https://github.com/aidatorajiro/memgame",
