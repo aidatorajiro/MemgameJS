@@ -36,8 +36,9 @@ let MAX_POINTS = 2000
 class ProcessView {
   constructor (pid) {
     this.tickcount = 0
-    this.rows = 20 // the number of tiles ÷ 2
-    this.tilesize = Math.floor(Globals.width / this.rows / 2)
+    this.cols = 20
+    this.rows = Math.ceil(this.cols * (Globals.height/Globals.width))
+    this.tilesize = Math.floor(Globals.width / this.cols / 2)
 
     this.mem = new Memory(pid)
 
@@ -99,8 +100,8 @@ class ProcessView {
     let colIndex = 0
     let vertIndex = 0
 
-    for (let i = -this.rows; i < this.rows + 2; i++) {
-      for (let j = -this.rows; j < this.rows; j++) {
+    for (let i = -this.cols; i < this.cols + 2; i++) {
+      for (let j = -this.rows; j < this.rows + 1; j++) {
         let x = cx + i
         let y = cy + j
 
