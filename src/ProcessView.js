@@ -37,7 +37,7 @@ class ProcessView {
   constructor (pid) {
     this.tickcount = 0
     this.cols = 20
-    this.rows = Math.ceil(this.cols * (Globals.height/Globals.width))
+    this.rows = Math.ceil(this.cols * (Globals.height / Globals.width))
     this.tilesize = Math.floor(Globals.width / this.cols / 2)
 
     this.mem = new Memory(pid)
