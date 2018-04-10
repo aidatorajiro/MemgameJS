@@ -100,8 +100,8 @@ class ProcessView {
     let colIndex = 0
     let vertIndex = 0
 
-    for (let i = -this.cols; i < this.cols + 2; i++) {
-      for (let j = -this.rows; j < this.rows + 1; j++) {
+    for (let i = -this.cols - 1; i < this.cols + 3; i++) {
+      for (let j = -this.rows; j < this.rows + 3; j++) {
         let x = cx + i
         let y = cy + j
 
