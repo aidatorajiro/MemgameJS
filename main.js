@@ -30,7 +30,7 @@ function createWindow () {
         slashes: true
       }))
     }
-  }, 1000*60*5)
+  }, 1000 * 60 * 5)
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
