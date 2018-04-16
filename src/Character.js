@@ -18,7 +18,7 @@ class Character {
     this.coordinate = new THREE.Vector2(0, 0)
 
     this.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
-    this.geometry = new THREE.PlaneGeometry(5, 5, 32)
+    this.geometry = new THREE.CircleGeometry(2.5, 16)
     this.mesh = new THREE.Mesh(this.geometry, this.material)
 
     Globals.scene.add(this.mesh)
@@ -35,8 +35,8 @@ class Character {
   }
 
   update () {
-    this.mesh.position.x = this.coordinate.x
-    this.mesh.position.y = this.coordinate.y
+    this.mesh.position.x = Math.floor(this.coordinate.x)
+    this.mesh.position.y = Math.floor(this.coordinate.y)
 
     for (let i of this.eases) {
       let t = this.time - i[2] - 5

@@ -30,7 +30,7 @@ class Footprints {
     this.points_geometry = new THREE.BufferGeometry()
     this.points_geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(MAX_POINTS * 3), 3))
     this.points_geometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(MAX_POINTS * 3), 3))
-    this.points_material = new THREE.PointsMaterial({ vertexColors: true, size: 3, sizeAttenuation: false })
+    this.points_material = new THREE.PointsMaterial({ vertexColors: true, size: 2, sizeAttenuation: false })
     this.points = new THREE.Points(this.points_geometry, this.points_material)
     Globals.scene.add(this.points)
 
@@ -44,8 +44,8 @@ class Footprints {
     this.coordinates_and_colors.push([Globals.character.coordinate.x, Globals.character.coordinate.y, 1])
     shuffle(this.coordinates_and_colors)
 
-    this.points.position.x = Globals.character.coordinate.x - 0.5
-    this.points.position.y = Globals.character.coordinate.y - 0.5
+    this.points.position.x = Math.floor(Globals.character.coordinate.x)
+    this.points.position.y = Math.floor(Globals.character.coordinate.y)
 
     let position = this.points_geometry.attributes.position.array
     let color = this.points_geometry.attributes.color.array
