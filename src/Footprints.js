@@ -53,14 +53,14 @@ class Footprints {
     let posIndex = 0
     let colIndex = 0
 
-    for (let i in this.coordinates_and_colors) {
+    for (let i = 0; i < this.coordinates_and_colors.length; i++) {
       let x = this.coordinates_and_colors[i][0]
       let y = this.coordinates_and_colors[i][1]
       let c = this.coordinates_and_colors[i][2] // the color of footprint
 
       position[posIndex++] = x - Globals.character.coordinate.x
       position[posIndex++] = y - Globals.character.coordinate.y
-      position[posIndex++] = 0
+      position[posIndex++] = -10
 
       color[colIndex++] = c
       color[colIndex++] = c

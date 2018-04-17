@@ -56,7 +56,7 @@ class ProcessSelect {
     // create process blocks
     this.blocks = []
     this.labels = []
-    for (let i in this.pids) {
+    for (let i = 0; i < this.pids.length; i++) {
       let x = (i % this.cols - this.cols / 2 + 0.5) * intervalX
       let y = (Math.floor(i / this.cols) - Math.floor(this.pids.length / this.cols)) * intervalY
 

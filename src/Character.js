@@ -20,6 +20,7 @@ class Character {
     this.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
     this.geometry = new THREE.CircleGeometry(2.5, 16)
     this.mesh = new THREE.Mesh(this.geometry, this.material)
+    this.mesh.position.z = -10
 
     Globals.scene.add(this.mesh)
   }
