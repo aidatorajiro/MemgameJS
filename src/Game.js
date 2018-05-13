@@ -60,9 +60,8 @@ class Game {
 
     Globals.renderer.render(Globals.scene, Globals.camera)
 
-    Globals.camera.position.x = Math.floor(Globals.character.coordinate.x)
-    Globals.camera.position.y = Math.floor(Globals.character.coordinate.y)
-
+    Globals.camera.position.x = Globals.character.coordinate.x
+    Globals.camera.position.y = Globals.character.coordinate.y
     Globals.footprints.update()
     Globals.character.update()
 
