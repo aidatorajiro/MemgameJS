@@ -62,7 +62,7 @@ let Kernel32 = ffi.Library('Kernel32', {
   'GetSystemInfo': ['void', ['void *']]
 })
 
-let MIN_ADDR, MAX_ADDR;
+let MIN_ADDR, MAX_ADDR
 {
   let info = new SystemInfo()
   Kernel32.GetSystemInfo(info.ref())
@@ -77,8 +77,8 @@ class Memory {
       throw new Error('OpenProcess errored')
     }
 
-    let iswow64 = ref.alloc('bool');
-    if (!Kernel32.IsWow64Process(self.handle, iswow64)) {
+    let iswow64 = ref.alloc('bool')
+    if (!Kernel32.IsWow64Process(this.handle, iswow64)) {
       throw new Error('IsWow64Process errored')
     }
     this.iswow64 = iswow64.deref()
