@@ -7,6 +7,10 @@ Please execute following command with Python 2.7.
 
 npm install && npm start
 
+## Screenshots
+![1.png](1.png)
+![2.png](2.png)
+
 ## How to play
 
 Japanese -> HOWTOPLAY.ja.md  
