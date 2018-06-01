@@ -2,7 +2,7 @@ environment:
   matrix:
   - PYTHON: C:/Python27-x64
 install:
-  - ps: Install-Product node 9
+  - ps: Install-Product node 9 x64
   - npm config set msvs_version 2015
   - npm install
   - npm run pack:win
