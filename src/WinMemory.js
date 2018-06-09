@@ -88,7 +88,7 @@ class Memory {
     let info = new RegionInfo()
     let current = MIN_ADDR
     let regions = []
-    while (current < (this.iswow64 ? 0x7FFFFFFF : MAX_ADDR)) {
+    while (current < 0x7FFFFFFFFF) {
       let ret = Kernel32.VirtualQueryEx(this.handle, current, info.ref(), info.ref().length)
       if (info.State === 0x1000) {
         regions.push([current, info.RegionSize])
