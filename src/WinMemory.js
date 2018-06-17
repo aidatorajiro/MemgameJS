@@ -62,12 +62,12 @@ let Kernel32 = ffi.Library('Kernel32', {
   'GetSystemInfo': ['void', ['void *']]
 })
 
-let MIN_ADDR, MAX_ADDR
+let MIN_ADDR//, MAX_ADDR
 {
   let info = new SystemInfo()
   Kernel32.GetSystemInfo(info.ref())
   MIN_ADDR = info.lpMinimumApplicationAddress
-  MAX_ADDR = info.lpMaximumApplicationAddress
+  // MAX_ADDR = info.lpMaximumApplicationAddress
 }
 
 class Memory {
