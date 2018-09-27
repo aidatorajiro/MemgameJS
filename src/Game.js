@@ -31,13 +31,25 @@ class Game {
     Globals.character = new Character()
     Globals.processSelect = new ProcessSelect()
 
+    Globals.mousePressing = false;
+
     // call animate func
     requestAnimationFrame((time) => {
       // event handlers
       window.addEventListener('resize', () => { this.resize() }, false)
 
       window.addEventListener('mousedown', function (ev) {
-        Globals.character.onClick(new THREE.Vector2(ev.clientX, ev.clientY))
+        Globals.mousePressing = true;
+        Globals.mouseXY = new THREE.Vector2(ev.clientX, ev.clientY);
+      }, false)
+
+      window.addEventListener('mouseup', function (ev) {
+        Globals.mousePressing = false;
+        Globals.mouseXY = new THREE.Vector2(ev.clientX, ev.clientY);
+      }, false)
+
+      window.addEventListener('mousemove', function (ev) {
+        Globals.mouseXY = new THREE.Vector2(ev.clientX, ev.clientY);
       }, false)
 
       this.last_time = 0
@@ -55,6 +67,10 @@ class Game {
   }
 
   animate (time) {
+    if (Globals.mousePressing === true) {
+      Globals.character.onClick(Globals.mouseXY)
+    }
+
     Globals.delta = time - this.last_time
     this.last_time = time
 
