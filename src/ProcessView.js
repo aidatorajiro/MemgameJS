@@ -78,11 +78,11 @@ class ProcessView {
     return this.region[0] + x + y * this.world_width
   }
 
-  getByteSync (x, y) {
+  getByteSync (x, y, l) {
     try {
-      return this.mem.read(this.getAddress(x, y), 1)[0]
+      return this.mem.read(this.getAddress(x, y), l)
     } catch (e) {
-      return 0
+      return Array(l).fill(0)
     }
   }
 
@@ -100,12 +100,13 @@ class ProcessView {
     let colIndex = 0
     let vertIndex = 0
 
-    for (let i = -this.cols - 1; i < this.cols + 3; i++) {
-      for (let j = -this.rows; j < this.rows + 3; j++) {
+    for (let j = -this.rows; j < this.rows + 3; j++) {
+      let y = cy + j
+      let data = this.getByteSync(cx, y, 2*this.cols + 3)
+      for (let i = -this.cols - 1; i < this.cols + 3; i++) {
         let x = cx + i
-        let y = cy + j
 
-        let col = this.getByteSync(x, y) / 255
+        let col = data[i + this.cols + 1] / 255
 
         if (col !== 0) {
           position[posIndex++] = i * this.tilesize
