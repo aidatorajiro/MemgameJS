@@ -49,6 +49,8 @@ class ProcessView {
       this.world_offset_x = Math.floor(this.world_width / 2)
       this.world_offset_y = Math.floor(this.world_height / 2)
 
+      console.log(this.world_width)
+
       let sum = 0
       for (let i = 0; i < 10; i++) {
         sum += this.getByteSync(this.world_offset_x, i + this.world_offset_y, 10).reduce((x, y) => (x + y))
@@ -78,6 +80,12 @@ class ProcessView {
 
   getByteSync (x, y, l) {
     try {
+      if (x + l >= this.world_width) {
+        let leftlength = this.world_width - x
+        let leftdata = this.mem.read(this.getAddress(x, y), leftlength)
+        let rightdata = this.mem.read(this.getAddress(x + leftlength, y), l - leftlength)
+        return leftdata.concat(rightdata)
+      }
       return this.mem.read(this.getAddress(x, y), l)
     } catch (e) {
       return Array(l).fill(0)
@@ -102,8 +110,7 @@ class ProcessView {
     let vertIndex = 0
 
     for (let j = -this.rows; j < this.rows + 3; j++) {
-      let y = charaY + j
-      let data = this.getByteSync(charaX, y, 2 * this.cols + 3)
+      let data = this.getByteSync(charaX, charaY + j, 2 * this.cols + 3)
       for (let i = -this.cols - 1; i < this.cols + 3; i++) {
         let col = data[i + this.cols + 1] / 255
 
