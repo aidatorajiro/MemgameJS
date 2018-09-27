@@ -102,10 +102,8 @@ class ProcessView {
 
     for (let j = -this.rows; j < this.rows + 3; j++) {
       let y = cy + j
-      let data = this.getByteSync(cx, y, 2*this.cols + 3)
+      let data = this.getByteSync(cx, y, 2 * this.cols + 3)
       for (let i = -this.cols - 1; i < this.cols + 3; i++) {
-        let x = cx + i
-
         let col = data[i + this.cols + 1] / 255
 
         if (col !== 0) {
