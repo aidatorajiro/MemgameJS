@@ -29,8 +29,8 @@ class Character {
   // input: click event position on window
   onClick (vec) {
     this.eases.push([
-      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.01,
-      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.01,
+      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.05,
+      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.05,
       this.time
     ])
   }
@@ -39,17 +39,12 @@ class Character {
     this.mesh.position.x = this.coordinate.x
     this.mesh.position.y = this.coordinate.y
 
-    this.eases = this.eases.filter((i) => {
+    for (let i of this.eases) {
       let t = this.time - i[2] - 5
 
-      let ax = i[0] / (0.1 * t * t + 1)
-      let ay = i[1] / (0.1 * t * t + 1)
-
-      this.velocity.x += ax
-      this.velocity.y += ay
-
-      return true;
-    })
+      this.velocity.x += i[0] / (0.1 * t * t + 1)
+      this.velocity.y += i[1] / (0.1 * t * t + 1)
+    }
 
     this.velocity.x *= 0.995
     this.velocity.y *= 0.995
