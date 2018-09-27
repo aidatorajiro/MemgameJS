@@ -46,15 +46,15 @@ class ProcessView {
       this.region = region
       this.world_size = this.region[1]
       this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
-      this.getAddress_offset_x = Math.floor(this.world_width / 2)
-      this.getAddress_offset_y = Math.floor(this.world_height / 2)
+      this.world_offset_x = Math.floor(this.world_width / 2)
+      this.world_offset_y = Math.floor(this.world_height / 2)
 
       let sum = 0
       for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-          sum += this.getByteSync(i, j)
-        }
+        sum += this.getByteSync(this.world_offset_x, i + this.world_offset_y, 10).reduce((x, y) => (x + y))
       }
+
+      console.log(sum)
 
       if (sum > 0) {
         break
@@ -71,8 +71,6 @@ class ProcessView {
   }
 
   getAddress (x, y) {
-    x += this.getAddress_offset_x
-    y += this.getAddress_offset_y
     x = mod(x, this.world_width)
     y = mod(y, this.world_height)
     return this.region[0] + x + y * this.world_width
@@ -87,11 +85,14 @@ class ProcessView {
   }
 
   update () {
-    let cx = Math.floor(Globals.character.coordinate.x / this.tilesize)
-    let cy = Math.floor(Globals.character.coordinate.y / this.tilesize)
+    let stairX = Math.floor(Globals.character.coordinate.x / this.tilesize)
+    let stairY = Math.floor(Globals.character.coordinate.y / this.tilesize)
 
-    this.world_points.position.x = cx * this.tilesize
-    this.world_points.position.y = cy * this.tilesize
+    this.world_points.position.x = stairX * this.tilesize
+    this.world_points.position.y = stairY * this.tilesize
+
+    let charaX = stairX + this.world_offset_x
+    let charaY = stairY + this.world_offset_y
 
     let position = this.world_geometry.attributes.position.array
     let color = this.world_geometry.attributes.color.array
@@ -101,8 +102,8 @@ class ProcessView {
     let vertIndex = 0
 
     for (let j = -this.rows; j < this.rows + 3; j++) {
-      let y = cy + j
-      let data = this.getByteSync(cx, y, 2 * this.cols + 3)
+      let y = charaY + j
+      let data = this.getByteSync(charaX, y, 2 * this.cols + 3)
       for (let i = -this.cols - 1; i < this.cols + 3; i++) {
         let col = data[i + this.cols + 1] / 255
 

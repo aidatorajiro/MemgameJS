@@ -29,8 +29,8 @@ class Character {
   // input: click event position on window
   onClick (vec) {
     this.eases.push([
-      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.05,
-      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.05,
+      Math.atan((vec.x - Globals.width / 2) * 0.04) * 0.1,
+      Math.atan((-vec.y + Globals.height / 2) * 0.04) * 0.1,
       this.time
     ])
   }
