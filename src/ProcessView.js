@@ -73,18 +73,18 @@ class ProcessView {
   }
 
   getAddress (x, y) {
-    x = mod(x, this.world_width)
-    y = mod(y, this.world_height)
     return this.region[0] + x + y * this.world_width
   }
 
   getByteSync (x, y, l) {
+    x = mod(x, this.world_width)
+    y = mod(y, this.world_height)
     try {
-      if (x + l >= this.world_width) {
+      if (x + l > this.world_width) {
         let leftlength = this.world_width - x
         let leftdata = this.mem.read(this.getAddress(x, y), leftlength)
-        let rightdata = this.mem.read(this.getAddress(x + leftlength, y), l - leftlength)
-        return leftdata.concat(rightdata)
+        let rightdata = this.mem.read(this.getAddress(0, y), l - leftlength)
+        return Array.from(leftdata).concat(Array.from(rightdata))
       }
       return this.mem.read(this.getAddress(x, y), l)
     } catch (e) {
