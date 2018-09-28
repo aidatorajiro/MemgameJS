@@ -31,7 +31,7 @@ function shuffle (array) {
   return array
 }
 
-let MAX_POINTS = 2000
+let MAX_POINTS = 10000
 
 class ProcessView {
   constructor (pid) {
@@ -90,16 +90,16 @@ class ProcessView {
   }
 
   update () {
-    this.cols = 20
-    this.rows = Math.ceil(this.cols * (Globals.height / Globals.width))
-    this.tilesize = Math.floor(Globals.width / this.cols / 2)
-    this.world_material.size = Math.floor(this.tilesize * 0.90)
+    this.tilesize = 20
+    this.cols = Math.ceil(Globals.width / this.tilesize / 2)
+    this.rows = Math.ceil(Globals.height / this.tilesize / 2)
+    this.world_material.size = this.tilesize
+
+    this.world_points.position.x = -(Globals.character.coordinate.x % this.tilesize)
+    this.world_points.position.y = -(Globals.character.coordinate.y % this.tilesize)
 
     let stairX = Math.floor(Globals.character.coordinate.x / this.tilesize)
     let stairY = Math.floor(Globals.character.coordinate.y / this.tilesize)
-
-    this.world_points.position.x = stairX * this.tilesize
-    this.world_points.position.y = stairY * this.tilesize
 
     let charaX = stairX + this.world_offset_x
     let charaY = stairY + this.world_offset_y

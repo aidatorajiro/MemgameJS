@@ -44,9 +44,6 @@ class Footprints {
     this.coordinates_and_colors.push([Globals.character.coordinate.x, Globals.character.coordinate.y, 1])
     shuffle(this.coordinates_and_colors)
 
-    this.points.position.x = Globals.character.coordinate.x
-    this.points.position.y = Globals.character.coordinate.y
-
     let position = this.points_geometry.attributes.position.array
     let color = this.points_geometry.attributes.color.array
 
