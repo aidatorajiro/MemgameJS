@@ -135,14 +135,14 @@ class ProcessSelect {
     let index = null
     let c = Globals.character.coordinate
     let ray = new THREE.Raycaster(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1))
-    for(let i in this.blocks) {
+    for (let i in this.blocks) {
       if (ray.intersectObject(this.blocks[i][0]).length > 0) {
         index = i
       }
-      this.blocks[i][0].position.x = this.blocks[i][1] - Globals.character.coordinate.x
-      this.blocks[i][0].position.y = this.blocks[i][2] - Globals.character.coordinate.y
-      this.labels[i][0].position.x = this.labels[i][1] - Globals.character.coordinate.x
-      this.labels[i][0].position.y = this.labels[i][2] - Globals.character.coordinate.y
+      this.blocks[i][0].position.x = this.blocks[i][1] - c.x
+      this.blocks[i][0].position.y = this.blocks[i][2] - c.y
+      this.labels[i][0].position.x = this.labels[i][1] - c.x
+      this.labels[i][0].position.y = this.labels[i][2] - c.y
     }
 
     // decorate block
