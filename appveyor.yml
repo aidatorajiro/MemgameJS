@@ -1,0 +1,24 @@
+environment:
+  matrix:
+  - PYTHON: C:/Python27-x64
+install:
+  - ps: Install-Product node 9 x64
+  - npm config set msvs_version 2015
+  - npm install
+  - npm run pack:win
+  - 7z a dist/Memgame-win32-x64.zip dist/Memgame-win32-x64
+test_script:
+  - npm run lint
+build: off
+platform: x64
+configuration: Release
+deploy:
+  - provider: GitHub
+    artifact: dist/Memgame-win32-x64.zip
+    auth_token:
+      secure: vGZUzRCWDmJIbfKMrKlxwgAUDNZTDo0HArTERedaOUpSRtUzcr/n06YL9vHC4GSI
+    on:
+      appveyor_repo_tag: true
+artifacts:
+  - path: dist/Memgame-win32-x64.zip
+    name: Memgame-win32-x64

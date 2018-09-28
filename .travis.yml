@@ -1,7 +1,4 @@
 language: objective-c
-cache:
-  directories:
-  - node_modules
 env:
 - NODE_VERSION="8.9"
 before_install:
@@ -13,13 +10,9 @@ before_install:
 install:
 - npm install
 script:
-- npm test
-before_deploy:
-- brew update
-- brew install wine
-- wine --version
-- brew install makensis
-- npm run build:osx
+- npm run lint
+- npm run pack:osx
+- cd dist; zip -r Memgame-darwin-x64.zip Memgame-darwin-x64; cd ..
 deploy:
   provider: releases
   api_key:
@@ -28,3 +21,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: aidatorajiro/MemgameJS
+    tags: true
