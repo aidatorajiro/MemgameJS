@@ -1,6 +1,6 @@
 language: objective-c
 env:
-- NODE_VERSION="8.9"
+- NODE_VERSION="12.13"
 before_install:
 - git clone https://github.com/creationix/nvm.git /tmp/.nvm
 - source /tmp/.nvm/nvm.sh

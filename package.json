@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "lint": "standard",
-    "pack:osx": "electron-packager . \"Memgame\" --platform=darwin --arch=x64 --electron-version=1.8.4 --out=\"dist\" --overwrite && cd dist/Memgame-darwin-x64/Memgame.app/Contents/Resources/app && npm install --production",
-    "pack:win": "electron-packager . \"Memgame\" --platform=win32 --arch=x64 --electron-version=1.8.4 --out=\"dist\" --overwrite & cd dist/Memgame-win32-x64/resources/app & npm install --production"
+    "pack:osx": "electron-packager . \"Memgame\" --platform=darwin --arch=x64 --electron-version=4.2.12 --out=\"dist\" --overwrite && cd dist/Memgame-darwin-x64/Memgame.app/Contents/Resources/app && npm install --production",
+    "pack:win": "electron-packager . \"Memgame\" --platform=win32 --arch=x64 --electron-version=4.2.12 --out=\"dist\" --overwrite & cd dist/Memgame-win32-x64/resources/app & npm install --production"
   },
   "repository": "https://github.com/aidatorajiro/memgame",
   "keywords": [
@@ -20,13 +20,13 @@
   "author": "Torajiro Aida",
   "license": "MIT",
   "devDependencies": {
-    "electron": "1.8.4",
-    "electron-packager": "^12.1.0",
-    "standard": "^11.0.1"
+    "electron": "4.2.12",
+    "electron-packager": "^14.2.1",
+    "standard": "^14.3.1"
   },
   "dependencies": {
-    "ffi": "^2.2.0",
-    "three": "^0.88.0"
+    "ffi": "^2.3.0",
+    "three": "^0.113.2"
   },
   "standard": {
     "globals": [
