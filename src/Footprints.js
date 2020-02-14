@@ -8,7 +8,7 @@ http://opensource.org/licenses/mit-license.php
 const THREE = require('THREE')
 const Globals = require('./Globals')
 
-let MAX_POINTS = 100
+const MAX_POINTS = 100
 
 function shuffle (array) {
   let n = array.length
@@ -47,16 +47,16 @@ class Footprints {
     this.points.position.x = Globals.character.coordinate.x
     this.points.position.y = Globals.character.coordinate.y
 
-    let position = this.points_geometry.attributes.position.array
-    let color = this.points_geometry.attributes.color.array
+    const position = this.points_geometry.attributes.position.array
+    const color = this.points_geometry.attributes.color.array
 
     let posIndex = 0
     let colIndex = 0
 
     for (let i = 0; i < this.coordinates_and_colors.length; i++) {
-      let x = this.coordinates_and_colors[i][0]
-      let y = this.coordinates_and_colors[i][1]
-      let c = this.coordinates_and_colors[i][2] // the color of footprint
+      const x = this.coordinates_and_colors[i][0]
+      const y = this.coordinates_and_colors[i][1]
+      const c = this.coordinates_and_colors[i][2] // the color of footprint
 
       position[posIndex++] = x - Globals.character.coordinate.x
       position[posIndex++] = y - Globals.character.coordinate.y

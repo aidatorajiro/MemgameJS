@@ -13,7 +13,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({backgroundColor: '#000000', alwaysOnTop: true, thickFrame: true, fullscreen: true, kiosk: true, frame: false})
+  mainWindow = new BrowserWindow({ backgroundColor: '#000000', alwaysOnTop: true, thickFrame: true, fullscreen: true, kiosk: true, frame: false })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

@@ -12,11 +12,11 @@ const suji = require('./suji.json')
 const Globals = require('./Globals')
 const Memory = require('./Memory')
 
-let width = 90
-let height = 90
-let intervalX = 150
-let intervalY = 150
-let font = new THREE.Font(suji)
+const width = 90
+const height = 90
+const intervalX = 150
+const intervalY = 150
+const font = new THREE.Font(suji)
 
 class ProcessSelect {
   constructor () {
@@ -43,9 +43,9 @@ class ProcessSelect {
 
     // create overwrap block
     {
-      let geometry = new THREE.PlaneGeometry(width - 2, height - 2, 1, 1)
-      let material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-      let mesh = new THREE.Mesh(geometry, material)
+      const geometry = new THREE.PlaneGeometry(width - 2, height - 2, 1, 1)
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+      const mesh = new THREE.Mesh(geometry, material)
       mesh.visible = false
       mesh.position.z = 1
       Globals.scene.add(mesh)
@@ -57,14 +57,14 @@ class ProcessSelect {
     this.blocks = []
     this.labels = []
     for (let i = 0; i < this.pids.length; i++) {
-      let x = (i % this.cols - this.cols / 2 + 0.5) * intervalX
-      let y = (Math.floor(i / this.cols) - Math.floor(this.pids.length / this.cols)) * intervalY
+      const x = (i % this.cols - this.cols / 2 + 0.5) * intervalX
+      const y = (Math.floor(i / this.cols) - Math.floor(this.pids.length / this.cols)) * intervalY
 
       // block
       {
-        let geometry = new THREE.PlaneGeometry(width, height, 1, 1)
-        let material = new THREE.MeshBasicMaterial({ color: 0xffffff })
-        let mesh = new THREE.Mesh(geometry, material)
+        const geometry = new THREE.PlaneGeometry(width, height, 1, 1)
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+        const mesh = new THREE.Mesh(geometry, material)
 
         mesh.position.x = x
         mesh.position.y = y
@@ -76,12 +76,12 @@ class ProcessSelect {
 
       // label
       {
-        let geometry = new THREE.TextGeometry(this.pids[i].toString(), {
+        const geometry = new THREE.TextGeometry(this.pids[i].toString(), {
           font: font,
           size: 10
         })
-        let material = new THREE.MeshBasicMaterial({ color: 0x052344 })
-        let mesh = new THREE.Mesh(geometry, material)
+        const material = new THREE.MeshBasicMaterial({ color: 0x052344 })
+        const mesh = new THREE.Mesh(geometry, material)
         mesh.position.x = x - width / 2 + 5
         mesh.position.y = y - height / 2 + 5
         mesh.position.z = 2
@@ -103,13 +103,13 @@ class ProcessSelect {
       this.overwrap.geometry.dispose()
       this.overwrap.material.dispose()
 
-      for (let m of this.blocks) {
+      for (const m of this.blocks) {
         Globals.scene.remove(m)
         m.geometry.dispose()
         m.material.dispose()
       }
 
-      for (let m of this.labels) {
+      for (const m of this.labels) {
         Globals.scene.remove(m)
         m.geometry.dispose()
         m.material.dispose()
@@ -123,7 +123,7 @@ class ProcessSelect {
     // After selecting
     if (this.progress >= 1) {
       // fade blocks
-      for (let m of this.blocks) {
+      for (const m of this.blocks) {
         m.material.opacity -= 0.015
         m.material.transparent = true
       }
@@ -133,10 +133,10 @@ class ProcessSelect {
     }
 
     // decorate block
-    let overwrap = this.overwrap
+    const overwrap = this.overwrap
 
     if (this.index !== null) {
-      let mesh = this.blocks[this.index]
+      const mesh = this.blocks[this.index]
 
       overwrap.position.x = mesh.position.x
       overwrap.position.y = mesh.position.y

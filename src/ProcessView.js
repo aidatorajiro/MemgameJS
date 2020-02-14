@@ -11,7 +11,7 @@ const Memory = require('./Memory')
 const Globals = require('./Globals')
 
 // mathematical modulo
-let mod = function (n, m) {
+const mod = function (n, m) {
   return ((n % m) + m) % m
 }
 
@@ -31,7 +31,7 @@ function shuffle (array) {
   return array
 }
 
-let MAX_POINTS = 2000
+const MAX_POINTS = 2000
 
 class ProcessView {
   constructor (pid) {
@@ -42,7 +42,7 @@ class ProcessView {
 
     this.mem = new Memory(pid)
 
-    for (let region of shuffle(this.mem.getRegions())) {
+    for (const region of shuffle(this.mem.getRegions())) {
       this.region = region
       this.world_size = this.region[1]
       this.world_width = this.world_height = Math.floor(Math.sqrt(this.world_size))
@@ -81,9 +81,9 @@ class ProcessView {
     y = mod(y, this.world_height)
     try {
       if (x + l > this.world_width) {
-        let leftlength = this.world_width - x
-        let leftdata = this.mem.read(this.getAddress(x, y), leftlength)
-        let rightdata = this.mem.read(this.getAddress(0, y), l - leftlength)
+        const leftlength = this.world_width - x
+        const leftdata = this.mem.read(this.getAddress(x, y), leftlength)
+        const rightdata = this.mem.read(this.getAddress(0, y), l - leftlength)
         return Array.from(leftdata).concat(Array.from(rightdata))
       }
       return this.mem.read(this.getAddress(x, y), l)
@@ -93,26 +93,26 @@ class ProcessView {
   }
 
   update () {
-    let stairX = Math.floor(Globals.character.coordinate.x / this.tilesize)
-    let stairY = Math.floor(Globals.character.coordinate.y / this.tilesize)
+    const stairX = Math.floor(Globals.character.coordinate.x / this.tilesize)
+    const stairY = Math.floor(Globals.character.coordinate.y / this.tilesize)
 
     this.world_points.position.x = stairX * this.tilesize
     this.world_points.position.y = stairY * this.tilesize
 
-    let charaX = stairX + this.world_offset_x
-    let charaY = stairY + this.world_offset_y
+    const charaX = stairX + this.world_offset_x
+    const charaY = stairY + this.world_offset_y
 
-    let position = this.world_geometry.attributes.position.array
-    let color = this.world_geometry.attributes.color.array
+    const position = this.world_geometry.attributes.position.array
+    const color = this.world_geometry.attributes.color.array
 
     let posIndex = 0
     let colIndex = 0
     let vertIndex = 0
 
     for (let j = -this.rows; j < this.rows + 3; j++) {
-      let data = this.getByteSync(charaX, charaY + j, 2 * this.cols + 5)
+      const data = this.getByteSync(charaX, charaY + j, 2 * this.cols + 5)
       for (let i = -this.cols - 1; i < this.cols + 3; i++) {
-        let col = data[i + this.cols + 1] / 255
+        const col = data[i + this.cols + 1] / 255
 
         if (col !== 0) {
           position[posIndex++] = i * this.tilesize

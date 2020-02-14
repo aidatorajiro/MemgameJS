@@ -39,8 +39,8 @@ class Character {
     this.mesh.position.x = this.coordinate.x
     this.mesh.position.y = this.coordinate.y
 
-    for (let i of this.eases) {
-      let t = this.time - i[2] - 5
+    for (const i of this.eases) {
+      const t = this.time - i[2] - 5
 
       this.velocity.x += i[0] / (0.1 * t * t + 1)
       this.velocity.y += i[1] / (0.1 * t * t + 1)
