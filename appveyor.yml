@@ -9,7 +9,6 @@ install:
   - 7z a dist/Memgame-win32-x64.zip dist/Memgame-win32-x64
 test_script:
   - npm run lint
-build: Script
 platform: x64
 configuration: Release
 deploy:
